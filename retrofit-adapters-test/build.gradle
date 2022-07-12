@@ -1,0 +1,47 @@
+import com.skydoves.retrofit.adapters.Configuration
+import com.skydoves.retrofit.adapters.Dependencies
+
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'kotlin-kapt'
+}
+
+android {
+  namespace 'com.skydoves.retrofit.adapters.test'
+  compileSdkVersion Configuration.compileSdk
+
+  defaultConfig {
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+}
+
+dependencies {
+  implementation Dependencies.coroutines
+  implementation Dependencies.okHttp
+  implementation Dependencies.retrofit
+  implementation Dependencies.moshi
+  kapt Dependencies.moshiGen
+
+  // unit test
+  implementation Dependencies.junit
+  implementation Dependencies.mockitoCore
+  implementation Dependencies.mockitoInline
+  implementation Dependencies.mockitoKotlin
+  implementation Dependencies.archTest
+  implementation Dependencies.mockWebServer
+  implementation Dependencies.retrofitMoshi
+  implementation Dependencies.mockitoKotlin
+  implementation Dependencies.coroutinesTest
+}

@@ -1,0 +1,38 @@
+import com.skydoves.retrofit.adapters.Dependencies
+
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply plugin: 'org.jetbrains.dokka'
+
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath Dependencies.androidGradlePlugin
+    classpath Dependencies.kotlinGradlePlugin
+    classpath Dependencies.spotlessGradlePlugin
+    classpath Dependencies.gradleNexusPublishPlugin
+    classpath Dependencies.dokka
+    classpath Dependencies.kotlinBinaryValidator
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0'
+  }
+}
+
+subprojects {
+  apply from: "$rootDir/spotless.gradle"
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { compile ->
+    kotlinOptions.freeCompilerArgs += [
+      "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+      "-Xopt-in=kotlin.RequiresOptIn",
+      "-Xexplicit-api=strict",
+    ]
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+apply from: "${rootDir}/scripts/publish-root.gradle"

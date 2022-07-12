@@ -1,0 +1,56 @@
+/*
+ * Copyright (C) 2022 skydoves (Jaewoong Eum)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.skydoves.retrofitadaptersdemo
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import arrow.core.right
+import com.skydoves.retrofitadaptersdemo.network.Pokemon
+import com.skydoves.retrofitadaptersdemo.network.PokemonService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import timber.log.Timber
+
+public class MainViewModel constructor(
+  private val pokemonService: PokemonService
+) : ViewModel() {
+
+  public fun fetchPosters() {
+    viewModelScope.launch {
+      val result = pokemonService.fetchPokemonList()
+      Timber.d("fetchPosters: ${result.getOrNull()}")
+    }
+  }
+
+  public fun fetchPostersAsEither() {
+    viewModelScope.launch {
+      val either = pokemonService.fetchPokemonListAsEither()
+      Timber.d("fetchPostersAsEither: ${either.right()}")
+    }
+  }
+
+  public fun fetchPostersAsPagingSource(): Flow<PagingData<Pokemon>> = flow {
+    val pagingSource = pokemonService.fetchPokemonListAsPagingSource()
+    val pagerFlow = Pager(PagingConfig(pageSize = 20)) { pagingSource }.flow
+    emitAll(pagerFlow)
+  }
+}

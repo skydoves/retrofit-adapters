@@ -1,0 +1,58 @@
+import com.skydoves.retrofit.adapters.Configuration
+import com.skydoves.retrofit.adapters.Dependencies
+
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.dokka'
+  id 'binary-compatibility-validator'
+}
+
+ext {
+  PUBLISH_GROUP_ID = Configuration.artifactGroup
+  PUBLISH_ARTIFACT_ID = 'retrofit-adapters-result'
+  PUBLISH_VERSION = rootVersionName
+}
+
+apply from: "${rootDir}/scripts/publish-module.gradle"
+
+android {
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation Dependencies.coroutines
+  implementation Dependencies.okHttp
+  api Dependencies.retrofit
+
+  // unit test
+  testImplementation project(":retrofit-adapters-test")
+  testImplementation Dependencies.junit
+  testImplementation Dependencies.mockitoCore
+  testImplementation Dependencies.mockitoInline
+  testImplementation Dependencies.mockitoKotlin
+  testImplementation Dependencies.archTest
+  testImplementation Dependencies.mockWebServer
+  testImplementation Dependencies.retrofitMoshi
+  testImplementation Dependencies.mockitoKotlin
+  testImplementation Dependencies.coroutinesTest
+}

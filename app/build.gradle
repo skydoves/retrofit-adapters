@@ -1,0 +1,55 @@
+import com.skydoves.retrofit.adapters.Configuration
+import com.skydoves.retrofit.adapters.Dependencies
+
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+}
+
+android {
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    applicationId "com.skydoves.retrofitadaptersdemo"
+    minSdkVersion Configuration.minSdkDemo
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
+  }
+
+  buildFeatures {
+    dataBinding true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation Dependencies.retrofitMoshi
+  implementation project(":retrofit-adapters-result")
+  implementation project(":retrofit-adapters-arrow")
+  implementation project(":retrofit-adapters-paging")
+
+  // android supports
+  implementation Dependencies.material
+  implementation Dependencies.viewModelKTX
+
+  implementation Dependencies.coroutines
+  implementation Dependencies.arrow
+  implementation Dependencies.moshi
+  kapt Dependencies.moshiGen
+
+  implementation Dependencies.glide
+  implementation Dependencies.timber
+}

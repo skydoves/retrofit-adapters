@@ -1,0 +1,12 @@
+public final class com/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory : retrofit2/CallAdapter$Factory {
+	public static final field Companion Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory$Companion;
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory;
+	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
+}
+
+public final class com/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory$Companion {
+	public final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory;
+	public static synthetic fun create$default (Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory;
+}
+

@@ -1,0 +1,29 @@
+public final class com/skydoves/retrofit/adapters/paging/NetworkPagingSource : androidx/paging/PagingSource {
+	public fun <init> (ILcom/skydoves/retrofit/adapters/paging/PagingMapper;Lkotlin/jvm/functions/Function2;)V
+	public fun getRefreshKey (Landroidx/paging/PagingState;)Ljava/lang/Integer;
+	public synthetic fun getRefreshKey (Landroidx/paging/PagingState;)Ljava/lang/Object;
+	public fun load (Landroidx/paging/PagingSource$LoadParams;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/skydoves/retrofit/adapters/paging/PagingCallAdapterFactory : retrofit2/CallAdapter$Factory {
+	public static final field Companion Lcom/skydoves/retrofit/adapters/paging/PagingCallAdapterFactory$Companion;
+	public static final fun create ()Lcom/skydoves/retrofit/adapters/paging/PagingCallAdapterFactory;
+	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
+}
+
+public final class com/skydoves/retrofit/adapters/paging/PagingCallAdapterFactory$Companion {
+	public final fun create ()Lcom/skydoves/retrofit/adapters/paging/PagingCallAdapterFactory;
+}
+
+public abstract interface class com/skydoves/retrofit/adapters/paging/PagingMapper {
+	public abstract fun map (Ljava/lang/Object;)Ljava/util/List;
+}
+
+public abstract interface annotation class com/skydoves/retrofit/adapters/paging/annotations/PagingKey : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/skydoves/retrofit/adapters/paging/annotations/PagingKeyConfig : java/lang/annotation/Annotation {
+	public abstract fun keySize ()I
+	public abstract fun mapper ()Ljava/lang/Class;
+}
+
