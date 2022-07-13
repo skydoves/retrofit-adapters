@@ -89,6 +89,8 @@ val retrofit: Retrofit = Retrofit.Builder()
   .build()
 ```
 
+> **Note**: For more information about the Testing coroutines, check out the [Testing Kotlin coroutines on Android](https://developer.android.com/kotlin/coroutines/test).
+
 <img align="right" width="130px" src="https://user-images.githubusercontent.com/24237865/178630375-bedd3be4-8d1e-4ba4-bf25-2640a16fcf6c.png"/>
 
 ## Jetpack's Paging
