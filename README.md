@@ -239,6 +239,8 @@ val retrofit: Retrofit = Retrofit.Builder()
   .build()
 ```
 
+> **Note**: For more information about the Testing coroutines, check out the [Testing Kotlin coroutines on Android](https://developer.android.com/kotlin/coroutines/test).
+
 ## Find this repository useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/retrofit-adapters/stargazers)__ for this repository. :star: <br>
 Also, __[follow me](https://github.com/skydoves)__ on GitHub for my next creations! 🤩
