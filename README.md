@@ -19,6 +19,8 @@
 ## Sandwich
 If you're interested in a more specified and lightweight Monad sealed API library for modeling Retrofit responses and handling exceptions, check out [Sandwich](https://github.com/skydoves/sandwich).
 
+<img align="right" width="90px" src="https://user-images.githubusercontent.com/24237865/178630165-76855349-ac04-4474-8bcf-8eb5f8c41095.png"/>
+
 ## Kotlin's Result
 
 This library allows you to model your Retrofit responses with [Kotlin's Result](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-result/) class. 
@@ -86,6 +88,8 @@ val retrofit: Retrofit = Retrofit.Builder()
   .addCallAdapterFactory(ResultCallAdapterFactory.create(testScope))
   .build()
 ```
+
+<img align="right" width="130px" src="https://user-images.githubusercontent.com/24237865/178630375-bedd3be4-8d1e-4ba4-bf25-2640a16fcf6c.png"/>
 
 ## Jetpack's Paging
 
@@ -163,6 +167,7 @@ viewModelScope.launch {
 
 Finally, you should call the `submitData` method by your `PagingDataAdapter` to bind the paging data. If you want to learn more about the Jetpack's Paging, check out the [Paging library](https://developer.android.com/topic/libraries/architecture/paging/v3-overview). 
 
+<img align="right" width="110px" src="https://user-images.githubusercontent.com/24237865/178630401-9d4472e0-3da2-4e94-8ff9-ee8d7d089df2.svg"/>
 
 ## Arrow's Either
 
