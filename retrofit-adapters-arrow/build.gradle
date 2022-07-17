@@ -56,4 +56,5 @@ dependencies {
   testImplementation Dependencies.retrofitMoshi
   testImplementation Dependencies.mockitoKotlin
   testImplementation Dependencies.coroutinesTest
+  testImplementation Dependencies.turbine
 }
