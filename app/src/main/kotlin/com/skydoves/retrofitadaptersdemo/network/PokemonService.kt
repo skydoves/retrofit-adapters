@@ -32,7 +32,8 @@ public interface PokemonService {
   )
   public suspend fun fetchPokemonListAsPagingSource(
     @Query("limit") limit: Int = 20,
-    @PagingKey @Query("offset") offset: Int = 0,
+    @PagingKey @Query("offset")
+    offset: Int = 0
   ): NetworkPagingSource<PokemonResponse, Pokemon>
 
   @GET("pokemon")

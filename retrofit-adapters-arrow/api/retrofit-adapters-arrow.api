@@ -10,7 +10,7 @@ public final class com/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory
 	public static synthetic fun create$default (Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/arrow/EitherCallAdapterFactory;
 }
 
-public final class com/skydoves/retrofit/adapters/arrow/internals/EitherExtensionsKt {
+public final class com/skydoves/retrofit/adapters/arrow/EitherExtensionsKt {
 	public static final fun foldSuspend (Larrow/core/Either;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun onLeftSuspend (Larrow/core/Either;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun onRightSuspend (Larrow/core/Either;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

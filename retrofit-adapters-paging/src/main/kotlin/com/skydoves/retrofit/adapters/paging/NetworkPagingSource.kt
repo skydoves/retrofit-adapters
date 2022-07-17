@@ -55,7 +55,7 @@ import retrofit2.awaitResponse
 public class NetworkPagingSource<T : Any, R : Any> constructor(
   private val offsetPageKey: Int,
   private val mapper: PagingMapper<T, R>,
-  private val call: suspend (page: Int) -> Call<T>,
+  private val call: suspend (page: Int) -> Call<T>
 ) : PagingSource<Int, R>() {
 
   override fun getRefreshKey(state: PagingState<Int, R>): Int? {

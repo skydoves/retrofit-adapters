@@ -21,9 +21,6 @@ package com.skydoves.retrofit.adapters.arrow
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
-import com.skydoves.retrofit.adapters.arrow.internals.foldSuspend
-import com.skydoves.retrofit.adapters.arrow.internals.onLeftSuspend
-import com.skydoves.retrofit.adapters.arrow.internals.onRightSuspend
 import com.skydoves.retrofit.adapters.test.MainCoroutinesRule
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
