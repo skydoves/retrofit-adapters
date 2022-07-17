@@ -43,12 +43,12 @@ public class MainViewModel constructor(
       val result = pokemonService.fetchPokemonList()
       result.onSuccessSuspend {
         Timber.d("fetched as Result: $it")
-      }.onFailureSuspend {
-        if (it is HttpException) {
-          val errorBody = it.response()?.errorBody()
-          Timber.e("errorBody: $errorBody")
+      }.onFailureSuspend { exception ->
+        if (exception is HttpException) {
+          val errorBody = exception.response()?.errorBody()
+          Timber.e("code: ${exception.code()} errorBody: $errorBody")
         } else {
-          Timber.e("$it")
+          Timber.e("$exception")
         }
       }
     }
@@ -62,7 +62,7 @@ public class MainViewModel constructor(
       }.onLeftSuspend {
         if (it is HttpException) {
           val errorBody = it.response()?.errorBody()
-          Timber.e("errorBody: $errorBody")
+          Timber.e("code: ${it.code()} errorBody: $errorBody")
         } else {
           Timber.e("$it")
         }
