@@ -40,7 +40,10 @@ public class MainPagingAdapter :
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = DataBindingUtil.inflate<ItemPokemonBinding>(
-      LayoutInflater.from(parent.context), R.layout.item_pokemon, parent, false
+      LayoutInflater.from(parent.context),
+      R.layout.item_pokemon,
+      parent,
+      false
     )
     return ViewHolder(binding)
   }

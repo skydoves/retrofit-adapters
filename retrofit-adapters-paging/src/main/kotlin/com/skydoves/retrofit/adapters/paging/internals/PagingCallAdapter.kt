@@ -33,7 +33,7 @@ import java.lang.reflect.Type
  */
 internal class PagingCallAdapter(
   private val resultType: Type,
-  private val pagingKeyConfig: PagingKeyConfig,
+  private val pagingKeyConfig: PagingKeyConfig
 ) : CallAdapter<Type, Call<NetworkPagingSource<Type, Type>>> {
 
   override fun responseType(): Type = resultType

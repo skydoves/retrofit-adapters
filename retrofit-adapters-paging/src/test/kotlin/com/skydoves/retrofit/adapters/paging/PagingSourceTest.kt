@@ -80,7 +80,8 @@ internal class PagingSourceTest : ApiMockServiceTest<PokemonService>() {
       workerDispatcher = coroutinesRule.testDispatcher
     )
     val pokemon = Pokemon(
-      name = "bulbasaur", url = "https://pokeapi.co/api/v2/pokemon/1/"
+      name = "bulbasaur",
+      url = "https://pokeapi.co/api/v2/pokemon/1/"
     )
     val pagingData = PagingData.from(
       listOf(pokemon, pokemon, pokemon)

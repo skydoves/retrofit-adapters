@@ -46,7 +46,7 @@ public class EitherCallAdapterFactory private constructor(
   override fun get(
     returnType: Type,
     annotations: Array<out Annotation>,
-    retrofit: Retrofit,
+    retrofit: Retrofit
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {

@@ -32,6 +32,7 @@ internal interface PokemonService {
   )
   suspend fun fetchPokemonList(
     @Query("limit") limit: Int = 20,
-    @PagingKey @Query("offset") offset: Int = 0,
+    @PagingKey @Query("offset")
+    offset: Int = 0
   ): NetworkPagingSource<PokemonResponse, Pokemon>
 }

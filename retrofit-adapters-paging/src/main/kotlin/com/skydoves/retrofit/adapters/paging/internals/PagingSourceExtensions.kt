@@ -40,7 +40,7 @@ import kotlin.reflect.jvm.kotlinFunction
  */
 internal fun <T : Any, R : Any> PagingSourceCall<T, R>.pagingSource(
   call: Call<T>,
-  pagingKeyConfig: PagingKeyConfig,
+  pagingKeyConfig: PagingKeyConfig
 ): NetworkPagingSource<T, R> {
   val invocation = call.request().tag(Invocation::class.java)!!
   val method = invocation.method()
