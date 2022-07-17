@@ -42,5 +42,8 @@ android {
 
 dependencies {
   implementation Dependencies.retrofit
+  implementation Dependencies.okHttp
   implementation Dependencies.kotlinSerializationJson
+
+  testImplementation Dependencies.junit
 }

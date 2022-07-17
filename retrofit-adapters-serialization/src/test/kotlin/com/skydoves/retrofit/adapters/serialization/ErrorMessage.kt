@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package com.skydoves.retrofit.adapters.serialize
+package com.skydoves.retrofit.adapters.serialization
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.decodeFromJsonElement
-import retrofit2.HttpException
-
-/**
- * Deserializes the Json string from error body of the [HttpException] to the [T] custom type.
- * It returns null if the error body is empty.
- */
-public inline fun <reified T> HttpException.deserializeErrorBody(): T? {
-  val errorBody = response()?.errorBody()?.toString() ?: return null
-  return Json.decodeFromJsonElement(JsonPrimitive(errorBody))
-}
+@kotlinx.serialization.Serializable
+internal data class ErrorMessage(
+  val code: Int,
+  val message: String
+)
