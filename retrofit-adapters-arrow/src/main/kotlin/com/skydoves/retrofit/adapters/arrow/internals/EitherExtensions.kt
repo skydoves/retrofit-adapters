@@ -21,6 +21,9 @@ import arrow.core.Either.Left
 import arrow.core.Either.Right
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Applies `ifLeft` if this is a [Left] or `ifRight` if this is a [Right].
  *
  * Example:
@@ -46,6 +49,9 @@ public suspend inline fun <A, B, C> Either<A, B>.foldSuspend(
   }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Performs the given suspend [onRight] on the encapsulated value if this [Either] instance represents [Right].
  * Returns the original Result unchanged.
  *
@@ -60,6 +66,9 @@ public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Performs the given suspend [onLeft] on the encapsulated value if this [Either] instance represents [Left].
  * Returns the original Result unchanged.
  *

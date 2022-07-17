@@ -22,6 +22,9 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Calls the specified suspend function [block] and returns its encapsulated result if invocation was successful,
  * catching any [Throwable] exception that was thrown from the suspend [block] function execution and encapsulating it as a failure.
  *
@@ -38,6 +41,9 @@ public suspend inline fun <R> runCatchingSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Calls the specified suspend function [block] with this value as its receiver and returns its encapsulated result if invocation was successful,
  * catching any [Throwable] exception that was thrown from the [block] function execution and encapsulating it as a failure.
  *
@@ -54,6 +60,9 @@ public suspend inline fun <T, R> T.runCatchingSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Performs the given suspend [action] on the encapsulated value if this instance represents success.
  * Returns the original Result unchanged.
  *
@@ -70,6 +79,9 @@ public suspend inline fun <T> Result<T>.onSuccessSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Performs the given suspend [action] on the encapsulated [Throwable] exception if this instance represents failure.
  * Returns the original [Result] unchanged.
  *
@@ -86,6 +98,9 @@ public suspend inline fun <T> Result<T>.onFailureSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Returns the result of [onSuccess] for the encapsulated value if this instance represents success or
  * the result of [onFailure] suspend function for the encapsulated [Throwable] exception if it is failure.
  *
@@ -106,6 +121,9 @@ public suspend inline fun <R, T> Result<T>.foldSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
  * Returns the encapsulated result of the given [transform] suspend function applied to the encapsulated value
  * if this instance represents [success][Result.isSuccess] or the
  * original encapsulated [Throwable] exception if it is [failure][Result.isFailure].
@@ -126,6 +144,9 @@ public suspend inline fun <R, T> Result<T>.mapSuspend(
 }
 
 /**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.0
+ *
  * Returns the encapsulated result of the given [transform] suspend function applied to the encapsulated [Throwable] exception
  * if this instance represents [failure][Result.isFailure] or the
  * original encapsulated value if it is [success][Result.isSuccess].
