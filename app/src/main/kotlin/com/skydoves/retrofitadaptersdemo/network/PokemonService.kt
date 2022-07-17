@@ -38,8 +38,8 @@ public interface PokemonService {
 
   @GET("pokemon")
   public suspend fun fetchPokemonList(
-    @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("limitss") limit: Int = 20,
+    @Query("offsetss") offset: Int = 0
   ): Result<PokemonResponse>
 
   @GET("pokemon")
