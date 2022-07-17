@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 
 public class MainViewModel constructor(
@@ -43,7 +44,12 @@ public class MainViewModel constructor(
       result.onSuccessSuspend {
         Timber.d("fetched as Result: $it")
       }.onFailureSuspend {
-        Timber.e("$it")
+        if (it is HttpException) {
+          val errorBody = it.response()?.errorBody()
+          Timber.e("errorBody: $errorBody")
+        } else {
+          Timber.e("$it")
+        }
       }
     }
   }
@@ -54,7 +60,12 @@ public class MainViewModel constructor(
       either.onRightSuspend {
         Timber.d("fetched as Either: $it")
       }.onLeftSuspend {
-        Timber.e("$it")
+        if (it is HttpException) {
+          val errorBody = it.response()?.errorBody()
+          Timber.e("errorBody: $errorBody")
+        } else {
+          Timber.e("$it")
+        }
       }
     }
   }
