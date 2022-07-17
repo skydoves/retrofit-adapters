@@ -43,7 +43,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
   kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.contracts.ExperimentalContracts"]
 }
 
-
 dependencies {
   implementation Dependencies.coroutines
   implementation Dependencies.okHttp
