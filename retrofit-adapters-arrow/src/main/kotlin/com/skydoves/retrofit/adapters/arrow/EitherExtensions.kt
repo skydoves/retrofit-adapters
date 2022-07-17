@@ -59,7 +59,7 @@ public suspend inline fun <A, B, C> Either<A, B>.foldSuspend(
  */
 public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
   crossinline onRight: suspend suspend (B) -> C
-) {
+): Either<A, B> = apply {
   if (this is Right) {
     onRight(value)
   }
@@ -76,7 +76,7 @@ public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
  */
 public suspend inline fun <A, B, C> Either<A, B>.onLeftSuspend(
   crossinline onLeft: suspend suspend (A) -> C
-) {
+): Either<A, B> = apply {
   if (this is Left) {
     onLeft(value)
   }

@@ -21,13 +21,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import arrow.core.right
+import com.skydoves.retrofit.adapters.arrow.onLeftSuspend
+import com.skydoves.retrofit.adapters.arrow.onRightSuspend
+import com.skydoves.retrofit.adapters.result.onFailureSuspend
+import com.skydoves.retrofit.adapters.result.onSuccessSuspend
 import com.skydoves.retrofitadaptersdemo.network.Pokemon
 import com.skydoves.retrofitadaptersdemo.network.PokemonService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 
 public class MainViewModel constructor(
@@ -37,14 +41,32 @@ public class MainViewModel constructor(
   public fun fetchPosters() {
     viewModelScope.launch {
       val result = pokemonService.fetchPokemonList()
-      Timber.d("fetchPosters: ${result.getOrNull()}")
+      result.onSuccessSuspend {
+        Timber.d("fetched as Result: $it")
+      }.onFailureSuspend {
+        if (it is HttpException) {
+          val errorBody = it.response()?.errorBody()
+          Timber.e("code: ${it.code()} message: ${it.message()} errorBody: $errorBody")
+        } else {
+          Timber.e("$it")
+        }
+      }
     }
   }
 
   public fun fetchPostersAsEither() {
     viewModelScope.launch {
       val either = pokemonService.fetchPokemonListAsEither()
-      Timber.d("fetchPostersAsEither: ${either.right()}")
+      either.onRightSuspend {
+        Timber.d("fetched as Either: $it")
+      }.onLeftSuspend {
+        if (it is HttpException) {
+          val errorBody = it.response()?.errorBody()
+          Timber.e("code: ${it.code()} message: ${it.message()} errorBody: $errorBody")
+        } else {
+          Timber.e("$it")
+        }
+      }
     }
   }
 
