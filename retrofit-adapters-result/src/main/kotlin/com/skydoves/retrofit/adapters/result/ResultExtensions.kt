@@ -145,7 +145,7 @@ public suspend inline fun <R, T> Result<T>.mapSuspend(
 
 /**
  * @author skydoves (Jaewoong Eum)
- * @since 1.0.0
+ * @since 1.0.1
  *
  * Returns the encapsulated result of the given [transform] suspend function applied to the encapsulated [Throwable] exception
  * if this instance represents [failure][Result.isFailure] or the
