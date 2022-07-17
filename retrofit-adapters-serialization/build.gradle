@@ -11,14 +11,14 @@ plugins {
 
 ext {
   PUBLISH_GROUP_ID = Configuration.artifactGroup
-  PUBLISH_ARTIFACT_ID = 'retrofit-adapters-serialize'
+  PUBLISH_ARTIFACT_ID = 'retrofit-adapters-serialization'
   PUBLISH_VERSION = rootVersionName
 }
 
 apply from: "${rootDir}/scripts/publish-module.gradle"
 
 android {
-  namespace 'com.skydoves.retrofit.adapters.serialize'
+  namespace 'com.skydoves.retrofit.adapters.serialization'
   compileSdk Configuration.compileSdk
 
   defaultConfig {
