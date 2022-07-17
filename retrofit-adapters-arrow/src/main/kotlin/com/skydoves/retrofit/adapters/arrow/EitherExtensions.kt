@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.retrofit.adapters.arrow.internals
+package com.skydoves.retrofit.adapters.arrow
 
 import arrow.core.Either
 import arrow.core.Either.Left
