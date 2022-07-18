@@ -25,9 +25,13 @@ import retrofit2.HttpException
  * @since 1.0.1
  *
  * Deserializes the Json string from error body of the [HttpException] to the [T] custom type.
- * It returns null if the error body is empty.
+ * It returns `null` if the exception is not [HttpException] or error body is empty.
  */
-public inline fun <reified T> HttpException.deserializeErrorBody(): T? {
-  val errorBody = response()?.errorBody()?.string() ?: return null
-  return Json.decodeFromString(errorBody)
+public inline fun <reified T> Throwable.deserializeHttpError(): T? {
+  if (this is HttpException) {
+    val errorBody = response()?.errorBody()?.string() ?: return null
+    return Json.decodeFromString(errorBody)
+  } else {
+    return null
+  }
 }
