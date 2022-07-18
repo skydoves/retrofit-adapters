@@ -38,7 +38,7 @@ internal class SerializationExtensionsTest {
       )
     )
     val httpException = HttpException(response)
-    val errorMessage = httpException.deserializeErrorBody<ErrorMessage>()
+    val errorMessage = httpException.deserializeHttpError<ErrorMessage>()
     assertThat(errorMessage?.code, `is`(10001))
     assertThat(errorMessage?.message, `is`("This is a custom error message"))
   }

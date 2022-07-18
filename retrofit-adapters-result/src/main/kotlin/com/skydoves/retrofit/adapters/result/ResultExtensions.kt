@@ -18,6 +18,8 @@
 
 package com.skydoves.retrofit.adapters.result
 
+import com.skydoves.retrofit.adapters.serialization.deserializeHttpError
+import retrofit2.HttpException
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -94,6 +96,29 @@ public suspend inline fun <T> Result<T>.onFailureSuspend(
     callsInPlace(action, InvocationKind.AT_MOST_ONCE)
   }
   exceptionOrNull()?.let { action(it) }
+  return this
+}
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.0.1
+ *
+ * Performs the given suspend [action] on the encapsulated custom error model [E] if this instance represents failure.
+ * The `errorBody()` of the [HttpException] will be deserialized to your custom error model [E].
+ * The given suspend [action] can receive null if the error body is empty.
+ * Returns the original [Result] unchanged.
+ *
+ * @param action Performs on the encapsulated value if this instance represents failure.
+ */
+public suspend inline fun <T, reified E> Result<T>.onFailureSuspendAsError(
+  crossinline action: suspend (errorModel: E?) -> Unit
+): Result<T> {
+  contract {
+    callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+  }
+  exceptionOrNull()?.let { throwable ->
+    action(throwable.deserializeHttpError<E>())
+  }
   return this
 }
 

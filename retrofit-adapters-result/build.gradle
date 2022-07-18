@@ -47,6 +47,7 @@ dependencies {
   implementation Dependencies.coroutines
   implementation Dependencies.okHttp
   api Dependencies.retrofit
+  api project(":retrofit-adapters-serialization")
 
   // unit test
   testImplementation project(":retrofit-adapters-test")
