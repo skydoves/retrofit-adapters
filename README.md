@@ -104,7 +104,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:retrofit-adapters-paging:1.0.0"
+    implementation "com.github.skydoves:retrofit-adapters-paging:<version>"
 }
 ```
 
@@ -182,7 +182,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:retrofit-adapters-arrow:1.0.0"
+    implementation "com.github.skydoves:retrofit-adapters-arrow:<version>"
 }
 ```
 
