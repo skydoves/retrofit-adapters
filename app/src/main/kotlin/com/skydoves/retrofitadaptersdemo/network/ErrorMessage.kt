@@ -16,11 +16,10 @@
 
 package com.skydoves.retrofitadaptersdemo.network
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = false)
+@Serializable
 public data class ErrorMessage(
-  @field:Json(name = "code") val code: Int,
-  @field:Json(name = "message") val message: String
+  val code: Int,
+  val message: String
 )

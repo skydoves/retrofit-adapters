@@ -4,6 +4,7 @@ import com.skydoves.retrofit.adapters.Dependencies
 plugins {
   id 'com.android.application'
   id 'kotlin-android'
+  id 'org.jetbrains.kotlin.plugin.serialization'
   id 'kotlin-kapt'
 }
 
@@ -40,6 +41,7 @@ dependencies {
   implementation project(":retrofit-adapters-result")
   implementation project(":retrofit-adapters-arrow")
   implementation project(":retrofit-adapters-paging")
+  implementation Dependencies.kotlinSerializationJson
 
   // android supports
   implementation Dependencies.material

@@ -241,6 +241,48 @@ val retrofit: Retrofit = Retrofit.Builder()
 
 > **Note**: For more information about the Testing coroutines, check out the [Testing Kotlin coroutines on Android](https://developer.android.com/kotlin/coroutines/test).
 
+<img align="right" width="90px" src="https://user-images.githubusercontent.com/24237865/178630165-76855349-ac04-4474-8bcf-8eb5f8c41095.png"/>
+
+## Kotlin Serialization
+
+This library allows you to deserialize your error body of the Retrofit response as your custom error class with [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/retrofit-adapters-serialization.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22retrofit-adapters-serialization%22)
+<br>
+
+> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+
+Add the dependency below to your **module**'s `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation "com.github.skydoves:retrofit-adapters-serialization:1.0.1"
+}
+```
+
+## Deserialize Error Body
+
+You can deserialize your error body with the `deserializeHttpError` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the bleow:
+
+```kotlin
+@Serializable
+public data class ErrorMessage(
+  val code: Int,
+  val message: String
+)
+```
+
+Next, gets the result of the error class to the `throwable` instance with the `deserializeHttpError` extension like the below:
+
+```kotlin
+val result = pokemonService.fetchPokemonList()
+result.onSuccessSuspend {
+  Timber.d("fetched as Result: $it")
+}.onFailureSuspend { throwable ->
+  val errorBody = throwable.deserializeHttpError<ErrorMessage>()
+}
+```
+
 ## Find this repository useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/retrofit-adapters/stargazers)__ for this repository. :star: <br>
 Also, __[follow me](https://github.com/skydoves)__ on GitHub for my next creations! 🤩

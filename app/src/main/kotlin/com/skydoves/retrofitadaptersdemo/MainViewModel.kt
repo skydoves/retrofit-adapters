@@ -44,8 +44,8 @@ public class MainViewModel constructor(
       val result = pokemonService.fetchPokemonList()
       result.onSuccessSuspend {
         Timber.d("fetched as Result: $it")
-      }.onFailureSuspend {
-        val errorBody = it.deserializeHttpError<ErrorMessage>()
+      }.onFailureSuspend { throwable ->
+        val errorBody = throwable.deserializeHttpError<ErrorMessage>()
         Timber.e("errorBody: $errorBody")
       }
     }
