@@ -262,7 +262,7 @@ dependencies {
 
 ## Deserialize Error Body
 
-You can deserialize your error body with the `deserializeHttpError` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the bleow:
+You can deserialize your error body with the `deserializeHttpError` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the below:
 
 ```kotlin
 @Serializable
