@@ -31,8 +31,8 @@ import retrofit2.Response
  * [PagingSourceCall] is an implementation of Retrofit's [Call] interface, which executes
  * the network data, handles and decides whether they succeed or fail.
  *
- * @param proxy Proxy of the original http request.
- * @param pagingKeyConfig Paging key configuration.
+ * @property proxy Proxy of the original http request.
+ * @property pagingKeyConfig Paging key configuration.
  */
 internal class PagingSourceCall<T : Any, R : Any>(
   private val proxy: Call<T>,

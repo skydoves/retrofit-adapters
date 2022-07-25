@@ -37,7 +37,7 @@ import java.lang.reflect.Type
  *
  * Also, [EitherCallAdapterFactory] allows you to return [Deferred] of the [Either].
  *
- * @param coroutineScope A coroutine scope that runs network requests.
+ * @property coroutineScope A coroutine scope that runs network requests.
  */
 public class EitherCallAdapterFactory private constructor(
   private val coroutineScope: CoroutineScope

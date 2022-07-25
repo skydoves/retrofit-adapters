@@ -33,8 +33,8 @@ import java.lang.reflect.Type
  *
  * [CallAdapter] that delegates network call request that returns [Deferred] of [Either] type.
  *
- * @param resultType Type of the result from the http request.
- * @param coroutineScope A coroutine scope that launches network requests.
+ * @property resultType Type of the result from the http request.
+ * @property coroutineScope A coroutine scope that launches network requests.
  */
 internal class EitherDeferredCallAdapter<T> constructor(
   private val resultType: Type,

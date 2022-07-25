@@ -27,8 +27,8 @@ import java.lang.reflect.Type
  *
  * [CallAdapter] that delegates network call request and creates an instance of the [ResultCall].
  *
- * @param resultType Type of the result from the http request.
- * @param coroutineScope A coroutine scope that launches network requests.
+ * @property resultType Type of the result from the http request.
+ * @property coroutineScope A coroutine scope that launches network requests.
  */
 internal class ResultCallAdapter(
   private val resultType: Type,

@@ -33,8 +33,8 @@ import retrofit2.awaitResponse
  * [ResultCall] is an implementation of Retrofit's [Call] interface, which executes
  * the network data, handles and decides whether they succeed or fail.
  *
- * @param proxy Proxy of the original http request.
- * @param coroutineScope A coroutine scope that launches network requests.
+ * @property proxy Proxy of the original http request.
+ * @property coroutineScope A coroutine scope that launches network requests.
  */
 internal class ResultCall<T : Any>(
   private val proxy: Call<T>,

@@ -28,8 +28,8 @@ import java.lang.reflect.Type
  *
  * [CallAdapter] that delegates network call request and creates an instance of the [PagingSourceCall].
  *
- * @param resultType Type of the result from the http request.
- * @param pagingKeyConfig Paging key configurations.
+ * @property resultType Type of the result from the http request.
+ * @property pagingKeyConfig Paging key configurations.
  */
 internal class PagingCallAdapter(
   private val resultType: Type,

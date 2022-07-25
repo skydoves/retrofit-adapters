@@ -37,7 +37,7 @@ import java.lang.reflect.Type
  *
  * Also, [ResultCallAdapterFactory] allows you to return [Deferred] of the [Result].
  *
- * @param coroutineScope A coroutine scope that runs network requests.
+ * @property coroutineScope A coroutine scope that runs network requests.
  */
 public class ResultCallAdapterFactory private constructor(
   private val coroutineScope: CoroutineScope

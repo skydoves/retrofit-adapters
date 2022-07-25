@@ -48,9 +48,9 @@ import retrofit2.awaitResponse
  * Basically, the default page key starts from the [offsetPageKey] that will be decided by the
  * call value of the parameter, which is annotated with [PagingKey].
  *
- * @param offsetPageKey A default page key that decides offset of the paging key value.
- * @param mapper Maps the response type [T] to the list of [R].
- * @param call A lambda function that returns [Call] interface to continuously fetch network data.
+ * @property offsetPageKey A default page key that decides offset of the paging key value.
+ * @property mapper Maps the response type [T] to the list of [R].
+ * @property call A lambda function that returns [Call] interface to continuously fetch network data.
  */
 public class NetworkPagingSource<T : Any, R : Any> constructor(
   private val offsetPageKey: Int,
