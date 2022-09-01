@@ -24,13 +24,14 @@ import retrofit2.HttpException
  * @author skydoves (Jaewoong Eum)
  * @since 1.0.1
  *
- * Deserializes the Json string from error body of the [HttpException] to the [T] custom type.
+ * Deserializes the Json string from error body of the [HttpException] to the [T] custom type. The
+ * [Json] instance could be configured as needed.
  * It returns `null` if the exception is not [HttpException] or error body is empty.
  */
-public inline fun <reified T> Throwable.deserializeHttpError(): T? {
+public inline fun <reified T> Throwable.deserializeHttpError(json: Json = Json): T? {
   if (this is HttpException) {
     val errorBody = response()?.errorBody()?.string() ?: return null
-    return Json.decodeFromString(errorBody)
+    return json.decodeFromString(errorBody)
   } else {
     return null
   }

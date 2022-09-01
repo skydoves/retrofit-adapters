@@ -16,6 +16,7 @@
 
 package com.skydoves.retrofit.adapters.serialization
 
+import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.MatcherAssert.assertThat
@@ -41,5 +42,18 @@ internal class SerializationExtensionsTest {
     val errorMessage = httpException.deserializeHttpError<ErrorMessage>()
     assertThat(errorMessage?.code, `is`(10001))
     assertThat(errorMessage?.message, `is`("This is a custom error message"))
+  }
+
+  @Test
+  fun `deserializeErrorBody ignored field Test`() {
+    val response = Response.error<String>(
+      403,
+      ("""{"code":10001, "message":"This is a custom error message", "extra":42}""".trimIndent()).toResponseBody(
+        contentType = "text/plain".toMediaType()
+      )
+    )
+    val httpException = HttpException(response)
+    val errorMessage = httpException.deserializeHttpError<ErrorMessage>(Json { ignoreUnknownKeys = true })
+    assertThat(errorMessage?.code, `is`(10001))
   }
 }
