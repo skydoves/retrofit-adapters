@@ -2,10 +2,9 @@ import com.skydoves.retrofit.adapters.Configuration
 import com.skydoves.retrofit.adapters.Dependencies
 
 plugins {
-  id 'com.android.library'
-  id 'org.jetbrains.kotlin.android'
-  id 'org.jetbrains.dokka'
-  id 'binary-compatibility-validator'
+  id "kotlin"
+  id "org.jetbrains.dokka"
+  id "binary-compatibility-validator"
 }
 
 ext {
@@ -15,29 +14,6 @@ ext {
 }
 
 apply from: "${rootDir}/scripts/publish-module.gradle"
-
-android {
-  compileSdkVersion Configuration.compileSdk
-  defaultConfig {
-    minSdkVersion Configuration.minSdk
-    targetSdkVersion Configuration.targetSdk
-    versionCode Configuration.versionCode
-    versionName Configuration.versionName
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
-
-  lintOptions {
-    abortOnError false
-  }
-}
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
   kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.contracts.ExperimentalContracts"]
