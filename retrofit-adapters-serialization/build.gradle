@@ -2,11 +2,10 @@ import com.skydoves.retrofit.adapters.Configuration
 import com.skydoves.retrofit.adapters.Dependencies
 
 plugins {
-  id 'com.android.library'
-  id 'org.jetbrains.kotlin.android'
-  id 'org.jetbrains.kotlin.plugin.serialization'
-  id 'org.jetbrains.dokka'
-  id 'binary-compatibility-validator'
+  id "kotlin"
+  id "org.jetbrains.kotlin.plugin.serialization"
+  id "org.jetbrains.dokka"
+  id "binary-compatibility-validator"
 }
 
 ext {
@@ -16,29 +15,6 @@ ext {
 }
 
 apply from: "${rootDir}/scripts/publish-module.gradle"
-
-android {
-  namespace 'com.skydoves.retrofit.adapters.serialization'
-  compileSdk Configuration.compileSdk
-
-  defaultConfig {
-    minSdk Configuration.minSdk
-    targetSdk Configuration.targetSdk
-  }
-
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
-
-  kotlinOptions {
-    jvmTarget = '1.8'
-  }
-
-  lintOptions {
-    abortOnError false
-  }
-}
 
 dependencies {
   implementation Dependencies.retrofit
