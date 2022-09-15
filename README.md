@@ -32,7 +32,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:retrofit-adapters-result:1.0.2"
+    implementation "com.github.skydoves:retrofit-adapters-result:1.0.3"
 }
 ```
 
