@@ -36,6 +36,7 @@ import java.lang.reflect.Type
  */
 internal class ResultDeferredCallAdapter<T> constructor(
   private val resultType: Type,
+  private val paramType: Type,
   private val coroutineScope: CoroutineScope
 ) : CallAdapter<T, Deferred<Result<T>>> {
 
@@ -56,7 +57,7 @@ internal class ResultDeferredCallAdapter<T> constructor(
     coroutineScope.launch {
       try {
         val response = call.awaitResponse()
-        val result = response.toResult(call)
+        val result = response.toResult(call, paramType)
         deferred.complete(result)
       } catch (e: Exception) {
         val result = Result.failure<T>(e)

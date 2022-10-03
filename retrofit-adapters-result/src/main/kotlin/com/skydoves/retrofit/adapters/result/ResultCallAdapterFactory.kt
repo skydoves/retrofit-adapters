@@ -57,8 +57,14 @@ public class ResultCallAdapterFactory private constructor(
         }
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-        return ResultCallAdapter(resultType, coroutineScope)
+        val paramType = getRawType(resultType)
+        return ResultCallAdapter(
+          resultType = resultType,
+          paramType = paramType,
+          coroutineScope = coroutineScope
+        )
       }
+
       Deferred::class.java -> {
         val callType = getParameterUpperBound(0, returnType as ParameterizedType)
         val rawType = getRawType(callType)
@@ -67,7 +73,12 @@ public class ResultCallAdapterFactory private constructor(
         }
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
-        return ResultDeferredCallAdapter<Any>(resultType, coroutineScope)
+        val paramType = getRawType(resultType)
+        return ResultDeferredCallAdapter<Any>(
+          resultType = resultType,
+          paramType = paramType,
+          coroutineScope = coroutineScope
+        )
       }
       else -> return null
     }
