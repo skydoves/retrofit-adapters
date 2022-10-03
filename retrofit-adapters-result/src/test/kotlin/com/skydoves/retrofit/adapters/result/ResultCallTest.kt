@@ -73,7 +73,6 @@ internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
 
     val result = service.fetchPokemonList()
     assertThat(result.isSuccess, `is`(false))
-    assertThat(result.isSuccess, `is`(false))
   }
 
   @Test
