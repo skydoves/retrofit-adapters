@@ -34,4 +34,7 @@ internal interface PokemonService {
     @Query("limit") limit: Int = 20,
     @Query("offset") offset: Int = 0
   ): Call<Result<PokemonResponse>>
+
+  @GET("pokemon")
+  suspend fun fetchPokemonListEmptyBody(): Result<Unit>
 }

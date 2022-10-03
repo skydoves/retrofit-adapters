@@ -25,6 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -38,6 +39,7 @@ import retrofit2.awaitResponse
  */
 internal class ResultCall<T : Any>(
   private val proxy: Call<T>,
+  private val paramType: Type,
   private val coroutineScope: CoroutineScope
 ) : Call<Result<T>> {
 
@@ -45,7 +47,7 @@ internal class ResultCall<T : Any>(
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val result = response.toResult(proxy)
+        val result = response.toResult(proxy, paramType)
         callback.onResponse(this@ResultCall, Response.success(result))
       } catch (e: Exception) {
         val result = Result.failure<T>(e)
@@ -56,11 +58,11 @@ internal class ResultCall<T : Any>(
 
   override fun execute(): Response<Result<T>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val result = proxy.execute().toResult(proxy)
+      val result = proxy.execute().toResult(proxy, paramType)
       Response.success(result)
     }
 
-  override fun clone(): Call<Result<T>> = ResultCall(proxy.clone(), coroutineScope)
+  override fun clone(): Call<Result<T>> = ResultCall(proxy.clone(), paramType, coroutineScope)
   override fun request(): Request = proxy.request()
   override fun timeout(): Timeout = proxy.timeout()
   override fun isExecuted(): Boolean = proxy.isExecuted

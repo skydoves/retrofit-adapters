@@ -20,6 +20,7 @@ import com.skydoves.retrofit.adapters.test.ApiMockServiceTest
 import com.skydoves.retrofit.adapters.test.MainCoroutinesRule
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -27,7 +28,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import retrofit2.Retrofit
 import retrofit2.awaitResponse
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(JUnit4::class)
 internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
@@ -35,11 +38,12 @@ internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
   @get:Rule
   val coroutinesRule = MainCoroutinesRule()
 
+  private val testScope = TestScope(coroutinesRule.testDispatcher)
+
   private lateinit var service: PokemonService
 
   @Before
   fun initService() {
-    val testScope = TestScope(coroutinesRule.testDispatcher)
     service = createService(PokemonService::class.java, ResultCallAdapterFactory.create(testScope))
   }
 
@@ -47,23 +51,54 @@ internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
   fun `fetch items as Result type with suspend function successfully`() = runTest {
     enqueueResponse("/PokemonResponse.json")
 
-    val response = service.fetchPokemonList()
-    assertThat(response.isSuccess, `is`(true))
+    val result = service.fetchPokemonList()
+    assertThat(result.isSuccess, `is`(true))
 
-    val data = response.getOrNull()!!
+    val data = result.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
   }
 
   @Test
+  fun `fetch items as Result type suspend function with error`() = runTest {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create())
+      .addCallAdapterFactory(ResultCallAdapterFactory.create(testScope))
+      .build()
+
+    val service = retrofit.create(PokemonService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody("foo"))
+
+    val result = service.fetchPokemonList()
+    assertThat(result.isSuccess, `is`(false))
+  }
+
+  @Test
+  fun `fetch items as Result type suspend function with empty body`() = runTest {
+    val retrofit: Retrofit = Retrofit.Builder()
+      .baseUrl(mockWebServer.url("/"))
+      .addConverterFactory(MoshiConverterFactory.create())
+      .addCallAdapterFactory(ResultCallAdapterFactory.create(testScope))
+      .build()
+
+    val service = retrofit.create(PokemonService::class.java)
+    mockWebServer.enqueue(MockResponse().setResponseCode(204).setBody(""))
+
+    val result = service.fetchPokemonListEmptyBody()
+    assertThat(result.isSuccess, `is`(true))
+    assertThat(result.getOrNull(), `is`(Unit))
+  }
+
+  @Test
   fun `fetch items as Call type of Result successfully`() = runTest {
     enqueueResponse("/PokemonResponse.json")
 
-    val response = service.fetchPokemonListAsCall().awaitResponse().body()!!
-    assertThat(response.isSuccess, `is`(true))
+    val result = service.fetchPokemonListAsCall().awaitResponse().body()!!
+    assertThat(result.isSuccess, `is`(true))
 
-    val data = response.getOrNull()!!
+    val data = result.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
