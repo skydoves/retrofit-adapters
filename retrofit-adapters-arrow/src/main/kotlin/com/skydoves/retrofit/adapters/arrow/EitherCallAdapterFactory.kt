@@ -59,8 +59,14 @@ public class EitherCallAdapterFactory private constructor(
         checkLeftIsThrowable(callType)
 
         val resultType = getParameterUpperBound(1, callType as ParameterizedType)
-        return EitherCallAdapter(resultType, coroutineScope)
+        val paramType = getRawType(resultType)
+        return EitherCallAdapter(
+          resultType = resultType,
+          paramType = paramType,
+          coroutineScope = coroutineScope
+        )
       }
+
       Deferred::class.java -> {
         val callType = getParameterUpperBound(0, returnType as ParameterizedType)
         val rawType = getRawType(callType)
@@ -71,7 +77,12 @@ public class EitherCallAdapterFactory private constructor(
         checkLeftIsThrowable(callType)
 
         val resultType = getParameterUpperBound(1, callType as ParameterizedType)
-        return EitherDeferredCallAdapter<Any>(resultType, coroutineScope)
+        val paramType = getRawType(resultType)
+        return EitherDeferredCallAdapter<Any>(
+          resultType = resultType,
+          paramType = paramType,
+          coroutineScope = coroutineScope
+        )
       }
       else -> return null
     }

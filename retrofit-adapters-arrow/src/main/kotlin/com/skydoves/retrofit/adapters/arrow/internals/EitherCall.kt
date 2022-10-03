@@ -27,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.awaitResponse
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -40,6 +41,7 @@ import retrofit2.awaitResponse
  */
 internal class EitherCall<T : Any>(
   private val proxy: Call<T>,
+  private val paramType: Type,
   private val coroutineScope: CoroutineScope
 ) : Call<Either<Throwable, T>> {
 
@@ -47,7 +49,7 @@ internal class EitherCall<T : Any>(
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val either = response.toEither(proxy)
+        val either = response.toEither(proxy, paramType)
         callback.onResponse(this@EitherCall, Response.success(either))
       } catch (e: Exception) {
         val either = e.left()
@@ -58,11 +60,13 @@ internal class EitherCall<T : Any>(
 
   override fun execute(): Response<Either<Throwable, T>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val either = proxy.execute().toEither(proxy)
+      val either = proxy.execute().toEither(proxy, paramType)
       Response.success(either)
     }
 
-  override fun clone(): Call<Either<Throwable, T>> = EitherCall(proxy.clone(), coroutineScope)
+  override fun clone(): Call<Either<Throwable, T>> =
+    EitherCall(proxy.clone(), paramType, coroutineScope)
+
   override fun request(): Request = proxy.request()
   override fun timeout(): Timeout = proxy.timeout()
   override fun isExecuted(): Boolean = proxy.isExecuted

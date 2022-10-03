@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("UNCHECKED_CAST")
+
 package com.skydoves.retrofit.adapters.arrow.internals
 
 import arrow.core.Either
@@ -21,6 +23,7 @@ import retrofit2.Call
 import retrofit2.HttpException
 import retrofit2.Invocation
 import retrofit2.Response
+import java.lang.reflect.Type
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -28,23 +31,24 @@ import retrofit2.Response
  *
  * Returns [Either] from the [Response] instance and [Call] interface.
  */
-internal fun <T : Any?> Response<T>.toEither(call: Call<T>): Either<Throwable, T> {
+internal fun <T : Any?> Response<T>.toEither(call: Call<T>, paramType: Type): Either<Throwable, T> {
   return Either.catch {
     if (isSuccessful) {
-      val body = body()
-      if (body == null) {
-        val invocation = call.request().tag(Invocation::class.java)!!
-        val method = invocation.method()
-        throw KotlinNullPointerException(
-          "Response from " +
-            method.declaringClass.name +
-            '.' +
-            method.name +
-            " was null but response body type was declared as non-null"
-        )
-      } else {
-        body
-      }
+      body()
+        // You can confine the response type to Unit if you need to handle empty body, e.g, 204 No content.
+        ?: if (paramType == Unit::class.java) {
+          Unit as T
+        } else {
+          val invocation = call.request().tag(Invocation::class.java)!!
+          val method = invocation.method()
+          throw KotlinNullPointerException(
+            "Response from " +
+              method.declaringClass.name +
+              '.' +
+              method.name +
+              " was null but response body type was declared as non-null"
+          )
+        }
     } else {
       throw HttpException(this)
     }

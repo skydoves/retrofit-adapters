@@ -38,6 +38,7 @@ import java.lang.reflect.Type
  */
 internal class EitherDeferredCallAdapter<T> constructor(
   private val resultType: Type,
+  private val paramType: Type,
   private val coroutineScope: CoroutineScope
 ) : CallAdapter<T, Deferred<Either<Throwable, T>>> {
 
@@ -58,7 +59,7 @@ internal class EitherDeferredCallAdapter<T> constructor(
 
       val response = call.awaitResponse()
       try {
-        val either = response.toEither(call)
+        val either = response.toEither(call, paramType)
         deferred.complete(either)
       } catch (e: Exception) {
         val either = e.left()
