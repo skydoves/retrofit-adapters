@@ -247,10 +247,10 @@ val retrofit: Retrofit = Retrofit.Builder()
 
 This library allows you to deserialize your error body of the Retrofit response as your custom error class with [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
 
+> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/retrofit-adapters-serialization.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22retrofit-adapters-serialization%22)
 <br>
-
-> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
 
 Add the dependency below to your **module**'s `build.gradle` file:
 
@@ -260,7 +260,7 @@ dependencies {
 }
 ```
 
-## Deserialize Error Body
+### Deserialize Error Body
 
 You can deserialize your error body with the `deserializeHttpError` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the below:
 
