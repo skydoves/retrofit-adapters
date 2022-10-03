@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets
 @RunWith(JUnit4::class)
 public abstract class ApiMockServiceTest<T> {
 
-  private lateinit var mockWebServer: MockWebServer
+  public lateinit var mockWebServer: MockWebServer
 
   @Before
   public fun mockServer() {
