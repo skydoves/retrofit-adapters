@@ -75,6 +75,15 @@ viewModelScope.launch {
 }
 ```
 
+### Empty Content 
+
+You can confine the response type as Unit when you need to handle empty body (content) API requests like the below:
+
+```kotlin
+@POST("/users/info")
+suspend fun updateUserInfo(@Body userRequest: UserRequest): Result<Unit>
+```
+
 ### Unit Tests by Injecting TestScope
 
 You can also inject your custom `CoroutineScope` into the `ResultCallAdapterFactory` and execute network requests on the scope.
@@ -223,6 +232,15 @@ viewModelScope.launch {
     // handle error case
   }
 }
+```
+
+### Empty Content 
+
+You can confine the response type as Unit when you need to handle empty body (content) API requests like the below:
+
+```kotlin
+@POST("/users/info")
+suspend fun updateUserInfo(@Body userRequest: UserRequest): Result<Unit>
 ```
 
 ### Unit Tests by Injecting TestScope
