@@ -75,7 +75,7 @@ viewModelScope.launch {
 }
 ```
 
-### Empty Content 
+### Empty Content Response
 
 You can confine the response type as Unit when you need to handle empty body (content) API requests like the below:
 
@@ -234,13 +234,13 @@ viewModelScope.launch {
 }
 ```
 
-### Empty Content 
+### Empty Content Response
 
 You can confine the response type as Unit when you need to handle empty body (content) API requests like the below:
 
 ```kotlin
 @POST("/users/info")
-suspend fun updateUserInfo(@Body userRequest: UserRequest): Result<Unit>
+suspend fun updateUserInfo(@Body userRequest: UserRequest): Either<Throwable, Unit>
 ```
 
 ### Unit Tests by Injecting TestScope
