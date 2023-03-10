@@ -38,15 +38,15 @@ internal class ResultDeferredCallAdapter<T> constructor(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope
-) : CallAdapter<T, Deferred<Result<T>>> {
+) : CallAdapter<T, Deferred<Result<T?>>> {
 
   override fun responseType(): Type {
     return resultType
   }
 
   @Suppress("DeferredIsResult")
-  override fun adapt(call: Call<T>): Deferred<Result<T>> {
-    val deferred = CompletableDeferred<Result<T>>().apply {
+  override fun adapt(call: Call<T>): Deferred<Result<T?>> {
+    val deferred = CompletableDeferred<Result<T?>>().apply {
       invokeOnCompletion {
         if (isCancelled && !call.isCanceled) {
           call.cancel()
@@ -57,7 +57,7 @@ internal class ResultDeferredCallAdapter<T> constructor(
     coroutineScope.launch {
       try {
         val response = call.awaitResponse()
-        val result = response.toResult(call, paramType)
+        val result = response.toResult(paramType)
         deferred.complete(result)
       } catch (e: Exception) {
         val result = Result.failure<T>(e)
