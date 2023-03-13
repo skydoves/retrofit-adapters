@@ -32,9 +32,9 @@ import java.lang.reflect.Type
 internal fun <T> Response<T>.toResult(paramType: Type): Result<T?> {
   return kotlin.runCatching {
     if (isSuccessful) {
-      if (paramType == Unit::class.java)
+      if (paramType == Unit::class.java) {
         Unit as T
-      else body()
+      } else body()
     } else {
       throw HttpException(this)
     }
