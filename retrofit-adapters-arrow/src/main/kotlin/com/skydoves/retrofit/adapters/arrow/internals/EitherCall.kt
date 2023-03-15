@@ -43,13 +43,13 @@ internal class EitherCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope
-) : Call<Either<Throwable, T>> {
+) : Call<Either<Throwable, T?>> {
 
-  override fun enqueue(callback: Callback<Either<Throwable, T>>) {
+  override fun enqueue(callback: Callback<Either<Throwable, T?>>) {
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val either = response.toEither(proxy, paramType)
+        val either = response.toEither(paramType)
         callback.onResponse(this@EitherCall, Response.success(either))
       } catch (e: Exception) {
         val either = e.left()
@@ -58,13 +58,13 @@ internal class EitherCall<T : Any>(
     }
   }
 
-  override fun execute(): Response<Either<Throwable, T>> =
+  override fun execute(): Response<Either<Throwable, T?>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val either = proxy.execute().toEither(proxy, paramType)
+      val either = proxy.execute().toEither(paramType)
       Response.success(either)
     }
 
-  override fun clone(): Call<Either<Throwable, T>> =
+  override fun clone(): Call<Either<Throwable, T?>> =
     EitherCall(proxy.clone(), paramType, coroutineScope)
 
   override fun request(): Request = proxy.request()
