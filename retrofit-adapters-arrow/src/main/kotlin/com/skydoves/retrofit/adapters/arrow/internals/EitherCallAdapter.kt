@@ -35,11 +35,11 @@ internal class EitherCallAdapter(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope
-) : CallAdapter<Type, Call<Either<Throwable, Type>>> {
+) : CallAdapter<Type, Call<Either<Throwable, Type?>>> {
 
   override fun responseType(): Type = resultType
 
-  override fun adapt(call: Call<Type>): Call<Either<Throwable, Type>> {
+  override fun adapt(call: Call<Type>): Call<Either<Throwable, Type?>> {
     return EitherCall(call, paramType, coroutineScope)
   }
 }

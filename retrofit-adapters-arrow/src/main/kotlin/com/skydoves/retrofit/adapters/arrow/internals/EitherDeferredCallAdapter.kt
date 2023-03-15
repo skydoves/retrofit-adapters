@@ -40,16 +40,16 @@ internal class EitherDeferredCallAdapter<T> constructor(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope
-) : CallAdapter<T, Deferred<Either<Throwable, T>>> {
+) : CallAdapter<T, Deferred<Either<Throwable, T?>>> {
 
   override fun responseType(): Type {
     return resultType
   }
 
   @Suppress("DeferredIsResult")
-  override fun adapt(call: Call<T>): Deferred<Either<Throwable, T>> =
+  override fun adapt(call: Call<T>): Deferred<Either<Throwable, T?>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val deferred = CompletableDeferred<Either<Throwable, T>>().apply {
+      val deferred = CompletableDeferred<Either<Throwable, T?>>().apply {
         invokeOnCompletion {
           if (isCancelled && !call.isCanceled) {
             call.cancel()
@@ -59,7 +59,7 @@ internal class EitherDeferredCallAdapter<T> constructor(
 
       val response = call.awaitResponse()
       try {
-        val either = response.toEither(call, paramType)
+        val either = response.toEither(paramType)
         deferred.complete(either)
       } catch (e: Exception) {
         val either = e.left()
