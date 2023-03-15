@@ -41,13 +41,13 @@ internal class ResultCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope
-) : Call<Result<T>> {
+) : Call<Result<T?>> {
 
-  override fun enqueue(callback: Callback<Result<T>>) {
+  override fun enqueue(callback: Callback<Result<T?>>) {
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val result = response.toResult(proxy, paramType)
+        val result = response.toResult(paramType)
         callback.onResponse(this@ResultCall, Response.success(result))
       } catch (e: Exception) {
         val result = Result.failure<T>(e)
@@ -56,13 +56,13 @@ internal class ResultCall<T : Any>(
     }
   }
 
-  override fun execute(): Response<Result<T>> =
+  override fun execute(): Response<Result<T?>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val result = proxy.execute().toResult(proxy, paramType)
+      val result = proxy.execute().toResult(paramType)
       Response.success(result)
     }
 
-  override fun clone(): Call<Result<T>> = ResultCall(proxy.clone(), paramType, coroutineScope)
+  override fun clone(): Call<Result<T?>> = ResultCall(proxy.clone(), paramType, coroutineScope)
   override fun request(): Request = proxy.request()
   override fun timeout(): Timeout = proxy.timeout()
   override fun isExecuted(): Boolean = proxy.isExecuted

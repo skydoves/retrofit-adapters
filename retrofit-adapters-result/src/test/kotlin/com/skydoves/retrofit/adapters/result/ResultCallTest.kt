@@ -23,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -102,5 +103,25 @@ internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
+  }
+
+  @Test
+  fun `fetch items as Result type suspend function with optional body`() = runTest {
+    enqueueResponse("/PokemonResponse.json")
+
+    val result = service.fetchPokemonListOptional()
+    assertThat(result.isSuccess, `is`(true))
+
+    val data = result.getOrNull()!!
+    assertThat(data.count, `is`(964))
+    assertThat(data.results[0].name, `is`("bulbasaur"))
+    assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
+
+    mockWebServer.enqueue(MockResponse().setResponseCode(204))
+
+    val resultNull = service.fetchPokemonListOptional()
+    assertThat(resultNull.isSuccess, `is`(true))
+    Assert.assertNull(resultNull.getOrNull())
+
   }
 }
