@@ -13,7 +13,7 @@ object Versions {
   internal const val OKHTTP = "4.10.0"
   internal const val COROUTINES = "1.6.4"
   internal const val MOSHI = "1.14.0"
-  internal const val ARROW = "1.1.3"
+  internal const val ARROW = "1.1.5"
   internal const val PAGING = "3.1.1"
 
   internal const val APPCOMPAT = "1.4.1"
