@@ -122,6 +122,5 @@ internal class ResultCallTest : ApiMockServiceTest<PokemonService>() {
     val resultNull = service.fetchPokemonListOptional()
     assertThat(resultNull.isSuccess, `is`(true))
     Assert.assertNull(resultNull.getOrNull())
-
   }
 }
