@@ -1,25 +1,25 @@
 package com.skydoves.retrofit.adapters
 
 object Versions {
-  internal const val ANDROID_GRADLE_PLUGIN = "7.4.0"
+  internal const val ANDROID_GRADLE_PLUGIN = "8.1.0"
   internal const val ANDROID_GRADLE_SPOTLESS = "6.7.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.3.0"
-  internal const val KOTLIN = "1.8.10"
-  internal const val KOTLIN_SERIALIZATION_JSON = "1.4.0"
-  internal const val KOTLIN_GRADLE_DOKKA = "1.7.20"
-  internal const val KOTLIN_BINARY_VALIDATOR = "0.13.0"
+  internal const val KOTLIN = "1.9.10"
+  internal const val KOTLIN_SERIALIZATION_JSON = "1.6.0"
+  internal const val KOTLIN_GRADLE_DOKKA = "1.8.20"
+  internal const val KOTLIN_BINARY_VALIDATOR = "0.13.2"
 
   internal const val RETROFIT = "2.9.0"
-  internal const val OKHTTP = "4.10.0"
-  internal const val COROUTINES = "1.6.4"
-  internal const val MOSHI = "1.14.0"
-  internal const val ARROW = "1.1.5"
+  internal const val OKHTTP = "4.11.0"
+  internal const val COROUTINES = "1.7.3"
+  internal const val MOSHI = "1.15.0"
+  internal const val ARROW = "1.2.0"
   internal const val PAGING = "3.1.1"
 
-  internal const val APPCOMPAT = "1.4.1"
-  internal const val MATERIAL = "1.5.0"
-  internal const val GLIDE = "4.13.1"
-  internal const val LIFECYCLE = "2.4.1"
+  internal const val APPCOMPAT = "1.6.1"
+  internal const val MATERIAL = "1.9.0"
+  internal const val GLIDE = "4.16.0"
+  internal const val LIFECYCLE = "2.6.1"
   internal const val TIMBER = "5.0.1"
 
   internal const val JUNIT = "4.13.1"
