@@ -1,6 +1,5 @@
 import com.skydoves.retrofit.adapters.Dependencies
 
-apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply plugin: 'org.jetbrains.dokka'
 
 buildscript {
@@ -35,4 +34,3 @@ task clean(type: Delete) {
   delete rootProject.buildDir
 }
 
-apply from: "${rootDir}/scripts/publish-root.gradle"

@@ -5,15 +5,23 @@ plugins {
   id "kotlin"
   id "org.jetbrains.dokka"
   id "binary-compatibility-validator"
+  id "com.vanniktech.maven.publish"
 }
 
-ext {
-  PUBLISH_GROUP_ID = Configuration.artifactGroup
-  PUBLISH_ARTIFACT_ID = 'retrofit-adapters-arrow'
-  PUBLISH_VERSION = rootVersionName
-}
+apply from: "${rootDir}/scripts/publish-module.gradle.kts"
 
-apply from: "${rootDir}/scripts/publish-module.gradle"
+mavenPublishing {
+  def artifactId = "retrofit-adapters-arrow"
+  coordinates(
+    Configuration.artifactGroup,
+    artifactId,
+    rootProject["libVersion"].toString()
+  )
+  pom {
+    name.set(artifactId)
+    description.set("Retrofit call adapters for modeling network responses using Kotlin Result, Jetpack Paging3, and Arrow Either.")
+  }
+}
 
 dependencies {
   implementation Dependencies.coroutines
