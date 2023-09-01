@@ -3,7 +3,7 @@ package com.skydoves.retrofit.adapters
 object Versions {
   internal const val ANDROID_GRADLE_PLUGIN = "8.1.0"
   internal const val ANDROID_GRADLE_SPOTLESS = "6.7.0"
-  internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.3.0"
+  internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "0.25.3"
   internal const val KOTLIN = "1.9.10"
   internal const val KOTLIN_SERIALIZATION_JSON = "1.6.0"
   internal const val KOTLIN_GRADLE_DOKKA = "1.8.20"
@@ -33,7 +33,7 @@ object Dependencies {
   const val androidGradlePlugin =
     "com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}"
   const val gradleNexusPublishPlugin =
-    "io.github.gradle-nexus:publish-plugin:${Versions.GRADLE_NEXUS_PUBLISH_PLUGIN}"
+    "com.vanniktech:gradle-maven-publish-plugin:${Versions.GRADLE_NEXUS_PUBLISH_PLUGIN}"
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
   const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.KOTLIN}"
   const val kotlinSerializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
