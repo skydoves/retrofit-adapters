@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.paging.internals
 
 import com.skydoves.retrofit.adapters.paging.NetworkPagingSource
@@ -33,7 +32,7 @@ import java.lang.reflect.Type
  */
 internal class PagingCallAdapter(
   private val resultType: Type,
-  private val pagingKeyConfig: PagingKeyConfig
+  private val pagingKeyConfig: PagingKeyConfig,
 ) : CallAdapter<Type, Call<NetworkPagingSource<Type, Type>>> {
 
   override fun responseType(): Type = resultType
@@ -41,7 +40,7 @@ internal class PagingCallAdapter(
   override fun adapt(call: Call<Type>): Call<NetworkPagingSource<Type, Type>> {
     return PagingSourceCall(
       proxy = call,
-      pagingKeyConfig = pagingKeyConfig
+      pagingKeyConfig = pagingKeyConfig,
     )
   }
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:Suppress("UNCHECKED_CAST")
 
 package com.skydoves.retrofit.adapters.arrow.internals
@@ -35,7 +34,9 @@ internal fun <T : Any?> Response<T>.toEither(paramType: Type): Either<Throwable,
     if (isSuccessful) {
       if (paramType == Unit::class.java) {
         Unit as T
-      } else body()
+      } else {
+        body()
+      }
     } else {
       throw HttpException(this)
     }

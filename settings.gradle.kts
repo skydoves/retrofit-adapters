@@ -12,10 +12,11 @@ dependencyResolutionManagement {
     mavenCentral()
   }
 }
+
 rootProject.name = "retrofit-adapters-demo"
-include ':app'
-include ':retrofit-adapters-arrow'
-include ':retrofit-adapters-result'
-include ':retrofit-adapters-paging'
-include ':retrofit-adapters-test'
-include ':retrofit-adapters-serialization'
+include(":app")
+include(":retrofit-adapters-arrow")
+include(":retrofit-adapters-result")
+include(":retrofit-adapters-paging")
+include(":retrofit-adapters-test")
+include(":retrofit-adapters-serialization")

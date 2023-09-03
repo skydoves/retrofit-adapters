@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.arrow
 
 import arrow.core.Either
@@ -41,7 +40,7 @@ import arrow.core.Either.Right
  */
 public suspend inline fun <A, B, C> Either<A, B>.foldSuspend(
   crossinline ifLeft: suspend (A) -> C,
-  crossinline ifRight: suspend (B) -> C
+  crossinline ifRight: suspend (B) -> C,
 ): C =
   when (this) {
     is Right -> ifRight(value)
@@ -58,7 +57,7 @@ public suspend inline fun <A, B, C> Either<A, B>.foldSuspend(
  * @param onRight Performs on the encapsulated value if this [Either] instance represents [Right].
  */
 public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
-  crossinline onRight: suspend suspend (B) -> C
+  crossinline onRight: suspend suspend (B) -> C,
 ): Either<A, B> = apply {
   if (this is Right) {
     onRight(value)
@@ -75,7 +74,7 @@ public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
  * @param onLeft Performs on the encapsulated value if this [Either] instance represents [Left].
  */
 public suspend inline fun <A, B, C> Either<A, B>.onLeftSuspend(
-  crossinline onLeft: suspend suspend (A) -> C
+  crossinline onLeft: suspend suspend (A) -> C,
 ): Either<A, B> = apply {
   if (this is Left) {
     onLeft(value)

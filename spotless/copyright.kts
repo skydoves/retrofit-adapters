@@ -13,16 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.skydoves.retrofitadaptersdemo
-
-import android.app.Application
-import timber.log.Timber
-
-public class App : Application() {
-
-  override fun onCreate() {
-    super.onCreate()
-
-    Timber.plant(Timber.DebugTree())
-  }
-}

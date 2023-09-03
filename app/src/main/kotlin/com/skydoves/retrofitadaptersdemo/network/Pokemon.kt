@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo.network
 
 import com.squareup.moshi.Json
@@ -23,11 +22,12 @@ import com.squareup.moshi.JsonClass
 public data class Pokemon(
   var page: Int = 0,
   @field:Json(name = "name") val name: String,
-  @field:Json(name = "url") val url: String
+  @field:Json(name = "url") val url: String,
 ) {
 
   public fun getImageUrl(): String {
     val index = url.split("/".toRegex()).dropLast(1).last()
-    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$index.png"
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+      "other/official-artwork/$index.png"
   }
 }

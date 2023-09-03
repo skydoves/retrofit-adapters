@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo.adapters
 
 import android.view.LayoutInflater
@@ -30,7 +29,7 @@ public class MainPagingAdapter :
   PagingDataAdapter<Pokemon, MainPagingAdapter.ViewHolder>(DataDifferntiator) {
 
   public class ViewHolder(
-    public val binding: ItemPokemonBinding
+    public val binding: ItemPokemonBinding,
   ) : RecyclerView.ViewHolder(binding.root)
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,7 +42,7 @@ public class MainPagingAdapter :
       LayoutInflater.from(parent.context),
       R.layout.item_pokemon,
       parent,
-      false
+      false,
     )
     return ViewHolder(binding)
   }

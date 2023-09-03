@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.result.internals
 
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +39,7 @@ import java.lang.reflect.Type
 internal class ResultCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : Call<Result<T?>> {
 
   override fun enqueue(callback: Callback<Result<T?>>) {

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:Suppress("UNCHECKED_CAST")
 
 package com.skydoves.retrofit.adapters.result
@@ -33,7 +32,7 @@ import kotlin.contracts.contract
  * @param block Returns its encapsulated result if invocation was successful,
  */
 public suspend inline fun <R> runCatchingSuspend(
-  crossinline block: suspend () -> R
+  crossinline block: suspend () -> R,
 ): Result<R> {
   return try {
     Result.success(block())
@@ -52,7 +51,7 @@ public suspend inline fun <R> runCatchingSuspend(
  * @param block Returns its encapsulated result if invocation was successful,
  */
 public suspend inline fun <T, R> T.runCatchingSuspend(
-  crossinline block: suspend T.() -> R
+  crossinline block: suspend T.() -> R,
 ): Result<R> {
   return try {
     Result.success(block())
@@ -71,7 +70,7 @@ public suspend inline fun <T, R> T.runCatchingSuspend(
  * @param action Performs on the encapsulated value if this instance represents success.
  */
 public suspend inline fun <T> Result<T>.onSuccessSuspend(
-  crossinline action: suspend (value: T) -> Unit
+  crossinline action: suspend (value: T) -> Unit,
 ): Result<T> {
   contract {
     callsInPlace(action, InvocationKind.AT_MOST_ONCE)
@@ -90,7 +89,7 @@ public suspend inline fun <T> Result<T>.onSuccessSuspend(
  * @param action Performs on the encapsulated value if this instance represents failure.
  */
 public suspend inline fun <T> Result<T>.onFailureSuspend(
-  crossinline action: suspend (exception: Throwable) -> Unit
+  crossinline action: suspend (exception: Throwable) -> Unit,
 ): Result<T> {
   contract {
     callsInPlace(action, InvocationKind.AT_MOST_ONCE)
@@ -111,7 +110,7 @@ public suspend inline fun <T> Result<T>.onFailureSuspend(
  * @param action Performs on the encapsulated value if this instance represents failure.
  */
 public suspend inline fun <T, reified E> Result<T>.onFailureSuspendAsError(
-  crossinline action: suspend (errorModel: E?) -> Unit
+  crossinline action: suspend (errorModel: E?) -> Unit,
 ): Result<T> {
   contract {
     callsInPlace(action, InvocationKind.AT_MOST_ONCE)
@@ -133,7 +132,7 @@ public suspend inline fun <T, reified E> Result<T>.onFailureSuspendAsError(
  */
 public suspend inline fun <R, T> Result<T>.foldSuspend(
   crossinline onSuccess: suspend (value: T) -> R,
-  crossinline onFailure: suspend (exception: Throwable) -> R
+  crossinline onFailure: suspend (exception: Throwable) -> R,
 ): R {
   contract {
     callsInPlace(onSuccess, InvocationKind.AT_MOST_ONCE)
@@ -157,7 +156,7 @@ public suspend inline fun <R, T> Result<T>.foldSuspend(
  * See [mapCatching] for an alternative that encapsulates exceptions.
  */
 public suspend inline fun <R, T> Result<T>.mapSuspend(
-  crossinline transform: suspend (value: T) -> R
+  crossinline transform: suspend (value: T) -> R,
 ): Result<R> {
   contract {
     callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
@@ -180,7 +179,7 @@ public suspend inline fun <R, T> Result<T>.mapSuspend(
  * See [recoverCatching] for an alternative that encapsulates exceptions.
  */
 public suspend inline fun <R, T : R> Result<T>.recoverSuspend(
-  crossinline transform: suspend (exception: Throwable) -> R
+  crossinline transform: suspend (exception: Throwable) -> R,
 ): Result<R> {
   contract {
     callsInPlace(transform, InvocationKind.AT_MOST_ONCE)

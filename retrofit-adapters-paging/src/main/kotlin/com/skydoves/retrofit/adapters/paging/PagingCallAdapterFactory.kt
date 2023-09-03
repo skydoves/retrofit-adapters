@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.paging
 
 import android.content.res.Resources.NotFoundException
@@ -41,7 +40,7 @@ public class PagingCallAdapterFactory private constructor() : CallAdapter.Factor
   override fun get(
     returnType: Type,
     annotations: Array<out Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {
@@ -53,15 +52,22 @@ public class PagingCallAdapterFactory private constructor() : CallAdapter.Factor
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
         val pagingKeyConfig = annotations.filterIsInstance<PagingKeyConfig>().firstOrNull()
-          ?: throw NotFoundException("Missing @PagingKeyConfig annotation for a method, which returns NetworkPagingSource type.")
+          ?: throw NotFoundException(
+            "Missing @PagingKeyConfig annotation for a method, " +
+              "which returns NetworkPagingSource type.",
+          )
 
         val mapper = pagingKeyConfig.mapper.createInstance()
         if (mapper !is PagingMapper<*, *>) {
-          throw NotFoundException("The mapper parameter class must implement PagingMapper interface: ${pagingKeyConfig.mapper}")
+          throw NotFoundException(
+            "The mapper parameter class must implement PagingMapper " +
+              "interface: ${pagingKeyConfig.mapper}",
+          )
         }
 
         return PagingCallAdapter(resultType, pagingKeyConfig)
       }
+
       else -> return null
     }
   }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.serialization
 
 import kotlinx.serialization.json.Json
@@ -34,9 +33,11 @@ internal class SerializationExtensionsTest {
   fun `deserializeErrorBody Test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message"}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message"}""".trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
     val httpException = HttpException(response)
     val errorMessage = httpException.deserializeHttpError<ErrorMessage>()
@@ -48,12 +49,15 @@ internal class SerializationExtensionsTest {
   fun `deserializeErrorBody ignored field Test`() {
     val response = Response.error<String>(
       403,
-      ("""{"code":10001, "message":"This is a custom error message", "extra":42}""".trimIndent()).toResponseBody(
-        contentType = "text/plain".toMediaType()
-      )
+      (
+        """{"code":10001, "message":"This is a custom error message", "extra":42}""".trimIndent()
+        ).toResponseBody(
+        contentType = "text/plain".toMediaType(),
+      ),
     )
     val httpException = HttpException(response)
-    val errorMessage = httpException.deserializeHttpError<ErrorMessage>(Json { ignoreUnknownKeys = true })
+    val errorMessage =
+      httpException.deserializeHttpError<ErrorMessage>(Json { ignoreUnknownKeys = true })
     assertThat(errorMessage?.code, `is`(10001))
   }
 }

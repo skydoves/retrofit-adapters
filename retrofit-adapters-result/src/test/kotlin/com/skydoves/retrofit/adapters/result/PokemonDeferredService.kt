@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.result
 
 import com.skydoves.retrofit.adapters.test.PokemonResponse
@@ -26,6 +25,6 @@ internal interface PokemonDeferredService {
   @GET("pokemon")
   fun fetchPokemonListAsync(
     @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("offset") offset: Int = 0,
   ): Deferred<Result<PokemonResponse>>
 }

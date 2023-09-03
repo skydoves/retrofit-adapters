@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.arrow
 
 import arrow.core.Either
@@ -40,13 +39,13 @@ import java.lang.reflect.Type
  * @property coroutineScope A coroutine scope that runs network requests.
  */
 public class EitherCallAdapterFactory private constructor(
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<out Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {
@@ -63,7 +62,7 @@ public class EitherCallAdapterFactory private constructor(
         return EitherCallAdapter(
           resultType = resultType,
           paramType = paramType,
-          coroutineScope = coroutineScope
+          coroutineScope = coroutineScope,
         )
       }
 
@@ -81,7 +80,7 @@ public class EitherCallAdapterFactory private constructor(
         return EitherDeferredCallAdapter<Any>(
           resultType = resultType,
           paramType = paramType,
-          coroutineScope = coroutineScope
+          coroutineScope = coroutineScope,
         )
       }
       else -> return null
@@ -94,7 +93,7 @@ public class EitherCallAdapterFactory private constructor(
     if (throwable != Throwable::class.java) {
       throw IllegalArgumentException(
         "Either type ($throwableType) is wrong; Throwable type must be placed " +
-          "in the left side like Either<Throwable, T>"
+          "in the left side like Either<Throwable, T>",
       )
     }
   }
@@ -109,7 +108,7 @@ public class EitherCallAdapterFactory private constructor(
      */
     @JvmStatic
     public fun create(
-      coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+      coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
     ): EitherCallAdapterFactory = EitherCallAdapterFactory(coroutineScope = coroutineScope)
   }
 }

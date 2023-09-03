@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.result
 
 import com.skydoves.retrofit.adapters.test.PokemonResponse
@@ -26,13 +25,13 @@ internal interface PokemonService {
   @GET("pokemon")
   suspend fun fetchPokemonList(
     @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("offset") offset: Int = 0,
   ): Result<PokemonResponse>
 
   @GET("pokemon")
   fun fetchPokemonListAsCall(
     @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("offset") offset: Int = 0,
   ): Call<Result<PokemonResponse>>
 
   @GET("pokemon")
@@ -41,6 +40,6 @@ internal interface PokemonService {
   @GET("pokemon")
   suspend fun fetchPokemonListOptional(
     @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("offset") offset: Int = 0,
   ): Result<PokemonResponse?>
 }

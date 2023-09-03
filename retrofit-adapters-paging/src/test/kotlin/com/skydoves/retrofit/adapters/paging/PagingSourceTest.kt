@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:OptIn(ExperimentalTime::class)
 
 package com.skydoves.retrofit.adapters.paging
@@ -60,8 +59,8 @@ internal class PagingSourceTest : ApiMockServiceTest<PokemonService>() {
       PagingSource.LoadParams.Refresh(
         key = 0,
         loadSize = 20,
-        placeholdersEnabled = false
-      )
+        placeholdersEnabled = false,
+      ),
     )
 
     assertThat(loadResult, instanceOf(PagingSource.LoadResult.Page::class.java))
@@ -77,14 +76,14 @@ internal class PagingSourceTest : ApiMockServiceTest<PokemonService>() {
     val differ = AsyncPagingDataDiffer(
       diffCallback = PokemonDiffCallback(),
       updateCallback = PokemonListCallback(),
-      workerDispatcher = coroutinesRule.testDispatcher
+      workerDispatcher = coroutinesRule.testDispatcher,
     )
     val pokemon = Pokemon(
       name = "bulbasaur",
-      url = "https://pokeapi.co/api/v2/pokemon/1/"
+      url = "https://pokeapi.co/api/v2/pokemon/1/",
     )
     val pagingData = PagingData.from(
-      listOf(pokemon, pokemon, pokemon)
+      listOf(pokemon, pokemon, pokemon),
     )
     differ.submitData(pagingData)
 

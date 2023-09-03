@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.paging
 
 import com.skydoves.retrofit.adapters.paging.annotations.PagingKey
@@ -28,11 +27,11 @@ internal interface PokemonService {
   @GET("pokemon")
   @PagingKeyConfig(
     keySize = 20,
-    mapper = PokemonPagingMapper::class
+    mapper = PokemonPagingMapper::class,
   )
   suspend fun fetchPokemonList(
     @Query("limit") limit: Int = 20,
     @PagingKey @Query("offset")
-    offset: Int = 0
+    offset: Int = 0,
   ): NetworkPagingSource<PokemonResponse, Pokemon>
 }

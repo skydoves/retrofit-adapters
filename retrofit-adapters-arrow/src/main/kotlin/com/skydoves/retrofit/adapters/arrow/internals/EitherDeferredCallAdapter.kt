@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.arrow.internals
 
 import arrow.core.Either
@@ -39,7 +38,7 @@ import java.lang.reflect.Type
 internal class EitherDeferredCallAdapter<T> constructor(
   private val resultType: Type,
   private val paramType: Type,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter<T, Deferred<Either<Throwable, T?>>> {
 
   override fun responseType(): Type {

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo.network
 
 import com.squareup.moshi.Json
@@ -24,5 +23,5 @@ public data class PokemonResponse(
   @field:Json(name = "count") val count: Int,
   @field:Json(name = "next") val next: String?,
   @field:Json(name = "previous") val previous: String?,
-  @field:Json(name = "results") val results: List<Pokemon>
+  @field:Json(name = "results") val results: List<Pokemon>,
 )
