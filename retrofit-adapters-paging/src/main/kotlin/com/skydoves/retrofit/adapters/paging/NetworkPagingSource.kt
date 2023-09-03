@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.paging
 
 import androidx.paging.Pager
@@ -55,7 +54,7 @@ import retrofit2.awaitResponse
 public class NetworkPagingSource<T : Any, R : Any> constructor(
   private val offsetPageKey: Int,
   private val mapper: PagingMapper<T, R>,
-  private val call: suspend (page: Int) -> Call<T>
+  private val call: suspend (page: Int) -> Call<T>,
 ) : PagingSource<Int, R>() {
 
   override fun getRefreshKey(state: PagingState<Int, R>): Int? {
@@ -79,13 +78,13 @@ public class NetworkPagingSource<T : Any, R : Any> constructor(
               method?.declaringClass?.name +
               '.' +
               method?.name +
-              " was null but response body type was declared as non-null"
+              " was null but response body type was declared as non-null",
           )
         } else {
           return LoadResult.Page(
             data = mapper.map(body),
             prevKey = if (pageKey == offsetPageKey) null else pageKey.minus(SINGLE_PAGE_SIZE),
-            nextKey = pageKey.plus(SINGLE_PAGE_SIZE)
+            nextKey = pageKey.plus(SINGLE_PAGE_SIZE),
           )
         }
       } else {

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo
 
 import androidx.lifecycle.ViewModel
@@ -36,7 +35,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 public class MainViewModel constructor(
-  private val pokemonService: PokemonService
+  private val pokemonService: PokemonService,
 ) : ViewModel() {
 
   public fun fetchPosters() {

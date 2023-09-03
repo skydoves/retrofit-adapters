@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo.network
 
 import kotlinx.serialization.Serializable
@@ -21,5 +20,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class ErrorMessage(
   val code: Int,
-  val message: String
+  val message: String,
 )

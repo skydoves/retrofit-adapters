@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofitadaptersdemo.binding
 
 import androidx.appcompat.widget.AppCompatImageView
@@ -26,7 +25,7 @@ public object BindingAdapters {
   @BindingAdapter("loadImage")
   public fun bindLoadImage(
     view: AppCompatImageView,
-    url: String
+    url: String,
   ) {
     Glide.with(view.context)
       .load(url)

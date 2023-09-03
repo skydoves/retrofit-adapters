@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.serialization
 
 @kotlinx.serialization.Serializable
 internal data class ErrorMessage(
   val code: Int,
-  val message: String
+  val message: String,
 )

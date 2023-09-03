@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.arrow
 
 import arrow.core.Either
@@ -27,6 +26,6 @@ internal interface PokemonDeferredService {
   @GET("pokemon")
   fun fetchPokemonListAsync(
     @Query("limit") limit: Int = 20,
-    @Query("offset") offset: Int = 0
+    @Query("offset") offset: Int = 0,
   ): Deferred<Either<Throwable, PokemonResponse>>
 }

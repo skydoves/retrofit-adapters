@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.arrow.internals
 
 import arrow.core.Either
@@ -42,7 +41,7 @@ import java.lang.reflect.Type
 internal class EitherCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : Call<Either<Throwable, T?>> {
 
   override fun enqueue(callback: Callback<Either<Throwable, T?>>) {

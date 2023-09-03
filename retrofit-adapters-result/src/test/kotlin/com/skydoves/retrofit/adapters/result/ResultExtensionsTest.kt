@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:OptIn(ExperimentalTime::class)
 
 package com.skydoves.retrofit.adapters.result
@@ -74,7 +73,7 @@ internal class ResultExtensionsTest {
     val successFlow = flow {
       success.foldSuspend(
         onSuccess = { emit(it) },
-        onFailure = { }
+        onFailure = { },
       )
     }
 
@@ -90,7 +89,7 @@ internal class ResultExtensionsTest {
     val flow = flow {
       failure.foldSuspend(
         onSuccess = { },
-        onFailure = { emit(exception) }
+        onFailure = { emit(exception) },
       )
     }
 

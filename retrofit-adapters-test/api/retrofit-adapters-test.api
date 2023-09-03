@@ -1,0 +1,67 @@
+public abstract class com/skydoves/retrofit/adapters/test/ApiMockServiceTest {
+	public field mockWebServer Lokhttp3/mockwebserver/MockWebServer;
+	public fun <init> ()V
+	public final fun createService (Ljava/lang/Class;Lretrofit2/CallAdapter$Factory;)Ljava/lang/Object;
+	public final fun enqueueResponse (Ljava/lang/String;)V
+	public final fun getMockWebServer ()Lokhttp3/mockwebserver/MockWebServer;
+	public final fun mockServer ()V
+	public final fun setMockWebServer (Lokhttp3/mockwebserver/MockWebServer;)V
+	public final fun stopServer ()V
+}
+
+public final class com/skydoves/retrofit/adapters/test/MainCoroutinesRule : org/junit/rules/TestWatcher {
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/coroutines/test/TestDispatcher;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/test/TestDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getTestDispatcher ()Lkotlinx/coroutines/test/TestDispatcher;
+}
+
+public final class com/skydoves/retrofit/adapters/test/Pokemon {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/skydoves/retrofit/adapters/test/Pokemon;
+	public static synthetic fun copy$default (Lcom/skydoves/retrofit/adapters/test/Pokemon;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/test/Pokemon;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getImageUrl ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/retrofit/adapters/test/PokemonJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lcom/skydoves/retrofit/adapters/test/Pokemon;
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lcom/skydoves/retrofit/adapters/test/Pokemon;)V
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/retrofit/adapters/test/PokemonResponse {
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;Ljava/util/List;)Lcom/skydoves/retrofit/adapters/test/PokemonResponse;
+	public static synthetic fun copy$default (Lcom/skydoves/retrofit/adapters/test/PokemonResponse;ILjava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/test/PokemonResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCount ()I
+	public final fun getNext ()Ljava/lang/String;
+	public final fun getPrevious ()Ljava/lang/String;
+	public final fun getResults ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/retrofit/adapters/test/PokemonResponseJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lcom/skydoves/retrofit/adapters/test/PokemonResponse;
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lcom/skydoves/retrofit/adapters/test/PokemonResponse;)V
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toString ()Ljava/lang/String;
+}
+

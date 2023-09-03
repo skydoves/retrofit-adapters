@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.paging.internals
 
 import com.skydoves.retrofit.adapters.paging.NetworkPagingSource
@@ -36,7 +35,7 @@ import retrofit2.Response
  */
 internal class PagingSourceCall<T : Any, R : Any>(
   private val proxy: Call<T>,
-  private val pagingKeyConfig: PagingKeyConfig
+  private val pagingKeyConfig: PagingKeyConfig,
 ) : Call<NetworkPagingSource<T, R>> {
 
   override fun execute(): Response<NetworkPagingSource<T, R>> {

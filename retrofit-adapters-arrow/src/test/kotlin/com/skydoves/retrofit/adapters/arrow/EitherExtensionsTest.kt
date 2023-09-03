@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:OptIn(ExperimentalTime::class)
 
 package com.skydoves.retrofit.adapters.arrow
@@ -75,7 +74,7 @@ internal class EitherExtensionsTest {
     val rightFlow = flow {
       right.foldSuspend(
         ifLeft = { },
-        ifRight = { emit(it) }
+        ifRight = { emit(it) },
       )
     }
 
@@ -90,7 +89,7 @@ internal class EitherExtensionsTest {
     val leftFlow = flow {
       left.foldSuspend(
         ifLeft = { emit(it) },
-        ifRight = { }
+        ifRight = { },
       )
     }
 

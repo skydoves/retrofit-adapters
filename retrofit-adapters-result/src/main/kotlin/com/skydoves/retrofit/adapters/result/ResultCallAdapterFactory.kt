@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.skydoves.retrofit.adapters.result
 
 import com.skydoves.retrofit.adapters.result.internals.ResultCallAdapter
@@ -40,13 +39,13 @@ import java.lang.reflect.Type
  * @property coroutineScope A coroutine scope that runs network requests.
  */
 public class ResultCallAdapterFactory private constructor(
-  private val coroutineScope: CoroutineScope
+  private val coroutineScope: CoroutineScope,
 ) : CallAdapter.Factory() {
 
   override fun get(
     returnType: Type,
     annotations: Array<out Annotation>,
-    retrofit: Retrofit
+    retrofit: Retrofit,
   ): CallAdapter<*, *>? {
     when (getRawType(returnType)) {
       Call::class.java -> {
@@ -61,7 +60,7 @@ public class ResultCallAdapterFactory private constructor(
         return ResultCallAdapter(
           resultType = resultType,
           paramType = paramType,
-          coroutineScope = coroutineScope
+          coroutineScope = coroutineScope,
         )
       }
 
@@ -77,7 +76,7 @@ public class ResultCallAdapterFactory private constructor(
         return ResultDeferredCallAdapter<Any>(
           resultType = resultType,
           paramType = paramType,
-          coroutineScope = coroutineScope
+          coroutineScope = coroutineScope,
         )
       }
       else -> return null
@@ -95,7 +94,7 @@ public class ResultCallAdapterFactory private constructor(
      */
     @JvmStatic
     public fun create(
-      coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+      coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
     ): ResultCallAdapterFactory = ResultCallAdapterFactory(coroutineScope = coroutineScope)
   }
 }

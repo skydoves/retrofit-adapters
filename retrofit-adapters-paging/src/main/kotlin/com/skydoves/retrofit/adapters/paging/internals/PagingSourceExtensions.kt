@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @file:Suppress("UNCHECKED_CAST")
 
 package com.skydoves.retrofit.adapters.paging.internals
@@ -40,21 +39,23 @@ import kotlin.reflect.jvm.kotlinFunction
  */
 internal fun <T : Any, R : Any> PagingSourceCall<T, R>.pagingSource(
   call: Call<T>,
-  pagingKeyConfig: PagingKeyConfig
+  pagingKeyConfig: PagingKeyConfig,
 ): NetworkPagingSource<T, R> {
   val invocation = call.request().tag(Invocation::class.java)!!
   val method = invocation.method()
   val pagingKey = method.kotlinFunction?.parameters?.indexOfFirst { it.hasAnnotation<PagingKey>() }
-  if (pagingKey == null || pagingKey == -1) throw RuntimeException(
-    method.declaringClass.name +
-      '.' +
-      method.name +
-      " must include the @PagingKey annotation to the page value parameter."
-  )
+  if (pagingKey == null || pagingKey == -1) {
+    throw RuntimeException(
+      method.declaringClass.name +
+        '.' +
+        method.name +
+        " must include the @PagingKey annotation to the page value parameter.",
+    )
+  }
   val keyIndex = pagingKey - 1
   return NetworkPagingSource(
     offsetPageKey = invocation.arguments()[keyIndex] as Int,
-    mapper = pagingKeyConfig.mapper.createInstance() as PagingMapper<T, R>
+    mapper = pagingKeyConfig.mapper.createInstance() as PagingMapper<T, R>,
   ) { page ->
     val nextCall = call.clone()
     val argsField = nextCall.javaClass.getDeclaredField("args")
