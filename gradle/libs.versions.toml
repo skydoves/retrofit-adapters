@@ -24,7 +24,8 @@ junit = "4.13.2"
 androidxTest = "1.5.2"
 androidxJunit = "1.1.5"
 androidxArchTest = "2.1.0"
-mockito = "3.12.4"
+mockito = "5.4.0"
+mockitoInline = "5.2.0"
 mockitoKotlin = "2.2.0"
 timber = "5.0.1"
 turbine = "0.6.0"
@@ -62,7 +63,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 
 arch-test = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxArchTest" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
-mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoInline" }
 mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
