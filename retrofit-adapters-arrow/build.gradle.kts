@@ -17,7 +17,8 @@ import com.skydoves.retrofit.adapters.Configuration
 import com.skydoves.retrofit.adapters.Dependencies
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.android.library.get().pluginId)
+  id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
@@ -38,6 +39,28 @@ mavenPublishing {
       "Retrofit call adapters for modeling network responses using Kotlin Result, " +
         "Jetpack Paging3, and Arrow Either."
     )
+  }
+}
+
+android {
+  compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.retrofit.adapters.arrow"
+  defaultConfig {
+    minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+
+  lint {
+    abortOnError = false
   }
 }
 
