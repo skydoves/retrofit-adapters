@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import com.skydoves.retrofit.adapters.Configuration
-import com.skydoves.retrofit.adapters.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -60,7 +59,7 @@ dependencies {
   implementation(project(":retrofit-adapters-result"))
   implementation(project(":retrofit-adapters-arrow"))
   implementation(project(":retrofit-adapters-paging"))
-  implementation(Dependencies.retrofitMoshi)
+  implementation(libs.retrofit.moshi)
 
   // android supports
   implementation(libs.material)

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import com.skydoves.retrofit.adapters.Configuration
-import com.skydoves.retrofit.adapters.Dependencies
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
