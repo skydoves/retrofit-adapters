@@ -28,11 +28,11 @@ This library allows you to model your Retrofit responses with [Kotlin's Result](
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/retrofit-adapters-result.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22retrofit-adapters-result%22)
 <br>
 
-Add the dependency below to your **module**'s `build.gradle` file:
+Add the dependency below to your **module**'s `build.gradle.kts` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:retrofit-adapters-result:1.0.13"
+    implementation("com.github.skydoves:retrofit-adapters-result:1.0.13")
 }
 ```
 

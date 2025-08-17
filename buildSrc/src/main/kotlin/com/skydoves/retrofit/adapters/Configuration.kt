@@ -17,9 +17,9 @@
 package com.skydoves.retrofit.adapters
 
 object Configuration {
-  const val compileSdk = 34
-  const val targetSdk = 34
-  const val minSdk = 19
+  const val compileSdk = 36
+  const val targetSdk = 36
+  const val minSdk = 21
   const val minSdkDemo = 21
   const val majorVersion = 1
   const val minorVersion = 0

@@ -41,7 +41,11 @@ mavenPublishing {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-  kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
+  compilerOptions {
+    freeCompilerArgs.addAll(
+      listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
+    )
+  }
 }
 
 dependencies {
