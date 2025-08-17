@@ -7,7 +7,9 @@
 
 # Java class files
 *.class
-./.kotlin
+
+# Kotlin
+.kotlin
 
 # Generated files
 bin/
@@ -15,9 +17,10 @@ gen/
 out/
 
 # Gradle files
-/.idea
 .gradle/
 build/
+.cxx/
+
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -36,15 +39,13 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
+/.idea/*
+!.idea/codeInsightSettings.xml
 app/.idea/
 
-# Mac
+# DS_Store
 *.DS_Store
+**/DS_Store
 
 # Keystore files
 *.jks
@@ -55,7 +56,5 @@ app/.idea/
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
+# Temporary API docs
+docs/api

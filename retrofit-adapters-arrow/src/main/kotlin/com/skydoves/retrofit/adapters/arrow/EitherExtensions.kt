@@ -57,7 +57,7 @@ public suspend inline fun <A, B, C> Either<A, B>.foldSuspend(
  * @param onRight Performs on the encapsulated value if this [Either] instance represents [Right].
  */
 public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
-  crossinline onRight: suspend suspend (B) -> C,
+  crossinline onRight: suspend (B) -> C,
 ): Either<A, B> = apply {
   if (this is Right) {
     onRight(value)
@@ -74,7 +74,7 @@ public suspend inline fun <A, B, C> Either<A, B>.onRightSuspend(
  * @param onLeft Performs on the encapsulated value if this [Either] instance represents [Left].
  */
 public suspend inline fun <A, B, C> Either<A, B>.onLeftSuspend(
-  crossinline onLeft: suspend suspend (A) -> C,
+  crossinline onLeft: suspend (A) -> C,
 ): Either<A, B> = apply {
   if (this is Left) {
     onLeft(value)

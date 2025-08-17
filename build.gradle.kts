@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 // Designed and developed by 2022 skydoves (Jaewoong Eum)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
@@ -57,11 +58,15 @@ subprojects {
 
   if (!name.contains("app")) {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-      kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
-      kotlinOptions.freeCompilerArgs += listOf(
-        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "-Xexplicit-api=strict",
-      )
+      compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+        freeCompilerArgs.addAll(
+          listOf(
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xexplicit-api=strict",
+          )
+        )
+      }
     }
   }
 
