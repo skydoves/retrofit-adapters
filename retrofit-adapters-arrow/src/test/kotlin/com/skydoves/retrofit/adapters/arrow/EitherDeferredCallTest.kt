@@ -49,7 +49,7 @@ internal class EitherDeferredCallTest : ApiMockServiceTest<PokemonDeferredServic
     val response = service.fetchPokemonListAsync().await()
     assertThat(response.isRight(), `is`(true))
 
-    val data = response.orNull()!!
+    val data = response.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))

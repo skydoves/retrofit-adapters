@@ -54,7 +54,7 @@ internal class EitherCallTest : ApiMockServiceTest<PokemonService>() {
     val response = service.fetchPokemonList()
     assertThat(response.isRight(), `is`(true))
 
-    val data = response.orNull()!!
+    val data = response.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
@@ -89,7 +89,7 @@ internal class EitherCallTest : ApiMockServiceTest<PokemonService>() {
 
     val response = service.fetchPokemonListEmptyBody()
     assertThat(response.isRight(), `is`(true))
-    assertThat(response.orNull(), `is`(Unit))
+    assertThat(response.getOrNull(), `is`(Unit))
   }
 
   @Test
@@ -99,7 +99,7 @@ internal class EitherCallTest : ApiMockServiceTest<PokemonService>() {
     val response = service.fetchPokemonListAsCall().awaitResponse().body()!!
     assertThat(response.isRight(), `is`(true))
 
-    val data = response.orNull()!!
+    val data = response.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
@@ -112,7 +112,7 @@ internal class EitherCallTest : ApiMockServiceTest<PokemonService>() {
     val response = service.fetchPokemonListOptional()
     assertThat(response.isRight(), `is`(true))
 
-    val data = response.orNull()!!
+    val data = response.getOrNull()!!
     assertThat(data.count, `is`(964))
     assertThat(data.results[0].name, `is`("bulbasaur"))
     assertThat(data.results[0].url, `is`("https://pokeapi.co/api/v2/pokemon/1/"))
@@ -121,6 +121,6 @@ internal class EitherCallTest : ApiMockServiceTest<PokemonService>() {
 
     val resultNull = service.fetchPokemonListOptional()
     assertThat(resultNull.isRight(), `is`(true))
-    Assert.assertNull(resultNull.orNull())
+    Assert.assertNull(resultNull.getOrNull())
   }
 }
