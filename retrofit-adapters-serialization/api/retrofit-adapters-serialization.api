@@ -1,0 +1,4 @@
+public final class com/skydoves/retrofit/adapters/serialization/SerializationExtensionsKt {
+	public static final fun getDefaultErrorJson ()Lkotlinx/serialization/json/Json;
+}
+

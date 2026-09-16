@@ -58,6 +58,19 @@ public abstract class ApiMockServiceTest<T> {
     mockWebServer.enqueue(mockResponse.setBody(source.readString(StandardCharsets.UTF_8)))
   }
 
+  /**
+   * Enqueues a successful response with no content, which Retrofit surfaces as a null body.
+   * A 200 with an empty payload would instead fail inside the converter.
+   */
+  public fun enqueueEmptyBody(code: Int = 204) {
+    mockWebServer.enqueue(MockResponse().setResponseCode(code))
+  }
+
+  /** Enqueues a failing response carrying [body] as the error body. */
+  public fun enqueueError(code: Int, body: String) {
+    mockWebServer.enqueue(MockResponse().setResponseCode(code).setBody(body))
+  }
+
   public fun createService(clazz: Class<T>, callAdapterFactory: CallAdapter.Factory): T {
     return Retrofit.Builder()
       .baseUrl(mockWebServer.url("/"))

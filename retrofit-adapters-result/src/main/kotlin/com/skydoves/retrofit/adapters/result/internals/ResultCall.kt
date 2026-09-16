@@ -15,6 +15,7 @@
  */
 package com.skydoves.retrofit.adapters.result.internals
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -35,19 +36,24 @@ import java.lang.reflect.Type
  *
  * @property proxy Proxy of the original http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a failure.
  */
 internal class ResultCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : Call<Result<T?>> {
 
   override fun enqueue(callback: Callback<Result<T?>>) {
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val result = response.toResult(paramType)
+        val result = response.toResult(paramType, nullBodyAsFailure)
         callback.onResponse(this@ResultCall, Response.success(result))
+      } catch (e: CancellationException) {
+        // Cancellation is not a network failure, so it must not be folded into Result.failure.
+        throw e
       } catch (e: Exception) {
         val result = Result.failure<T>(e)
         callback.onResponse(this@ResultCall, Response.success(result))
@@ -57,11 +63,20 @@ internal class ResultCall<T : Any>(
 
   override fun execute(): Response<Result<T?>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val result = proxy.execute().toResult(paramType)
+      // Mirrors enqueue: transport failures are encapsulated rather than thrown.
+      val result = try {
+        proxy.execute().toResult(paramType, nullBodyAsFailure)
+      } catch (e: CancellationException) {
+        throw e
+      } catch (e: Exception) {
+        Result.failure(e)
+      }
       Response.success(result)
     }
 
-  override fun clone(): Call<Result<T?>> = ResultCall(proxy.clone(), paramType, coroutineScope)
+  override fun clone(): Call<Result<T?>> =
+    ResultCall(proxy.clone(), paramType, coroutineScope, nullBodyAsFailure)
+
   override fun request(): Request = proxy.request()
   override fun timeout(): Timeout = proxy.timeout()
   override fun isExecuted(): Boolean = proxy.isExecuted

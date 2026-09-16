@@ -28,16 +28,18 @@ import java.lang.reflect.Type
  *
  * @property resultType Type of the result from the http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a failure.
  */
 internal class ResultCallAdapter(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : CallAdapter<Type, Call<Result<Type?>>> {
 
   override fun responseType(): Type = resultType
 
   override fun adapt(call: Call<Type>): Call<Result<Type?>> {
-    return ResultCall(call, paramType, coroutineScope)
+    return ResultCall(call, paramType, coroutineScope, nullBodyAsFailure)
   }
 }

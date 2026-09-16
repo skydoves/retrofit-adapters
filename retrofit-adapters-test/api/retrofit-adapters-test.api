@@ -2,6 +2,9 @@ public abstract class com/skydoves/retrofit/adapters/test/ApiMockServiceTest {
 	public field mockWebServer Lokhttp3/mockwebserver/MockWebServer;
 	public fun <init> ()V
 	public final fun createService (Ljava/lang/Class;Lretrofit2/CallAdapter$Factory;)Ljava/lang/Object;
+	public final fun enqueueEmptyBody (I)V
+	public static synthetic fun enqueueEmptyBody$default (Lcom/skydoves/retrofit/adapters/test/ApiMockServiceTest;IILjava/lang/Object;)V
+	public final fun enqueueError (ILjava/lang/String;)V
 	public final fun enqueueResponse (Ljava/lang/String;)V
 	public final fun getMockWebServer ()Lokhttp3/mockwebserver/MockWebServer;
 	public final fun mockServer ()V

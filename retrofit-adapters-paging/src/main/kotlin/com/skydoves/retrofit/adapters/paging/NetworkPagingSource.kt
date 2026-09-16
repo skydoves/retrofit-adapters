@@ -22,6 +22,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.skydoves.retrofit.adapters.paging.annotations.PagingKey
 import com.skydoves.retrofit.adapters.paging.annotations.PagingKeyConfig
+import kotlinx.coroutines.CancellationException
 import retrofit2.Call
 import retrofit2.HttpException
 import retrofit2.Invocation
@@ -67,12 +68,12 @@ public class NetworkPagingSource<T : Any, R : Any> constructor(
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, R> {
     try {
       val pageKey = params.key ?: offsetPageKey
-      val response = call(pageKey).awaitResponse()
+      val pageCall = call(pageKey)
+      val response = pageCall.awaitResponse()
       if (response.isSuccessful) {
         val body = response.body()
         if (body == null) {
-          val invocation = call(pageKey).request().tag(Invocation::class.java)
-          val method = invocation?.method()
+          val method = pageCall.request().tag(Invocation::class.java)?.method()
           throw KotlinNullPointerException(
             "Response from " +
               method?.declaringClass?.name +
@@ -90,6 +91,9 @@ public class NetworkPagingSource<T : Any, R : Any> constructor(
       } else {
         throw HttpException(response)
       }
+    } catch (e: CancellationException) {
+      // Paging renders LoadResult.Error as a failed load, so a cancelled load must stay cancelled.
+      throw e
     } catch (exception: Exception) {
       return LoadResult.Error(exception)
     }

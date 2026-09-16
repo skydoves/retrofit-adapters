@@ -1,0 +1,8 @@
+public final class com/skydoves/retrofit/adapters/core/HttpErrorBodyKt {
+	public static final fun httpErrorBody (Ljava/lang/Throwable;)Ljava/lang/String;
+}
+
+public final class com/skydoves/retrofit/adapters/core/NullBodyException : java/io/IOException {
+	public fun <init> (Ljava/lang/String;)V
+}
+

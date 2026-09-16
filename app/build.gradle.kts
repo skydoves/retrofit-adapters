@@ -58,6 +58,8 @@ dependencies {
   implementation(project(":retrofit-adapters-result"))
   implementation(project(":retrofit-adapters-arrow"))
   implementation(project(":retrofit-adapters-paging"))
+  implementation(project(":retrofit-adapters-serialization"))
+  ksp(project(":retrofit-adapters-paging-compiler"))
   implementation(libs.retrofit.moshi)
 
   // android supports

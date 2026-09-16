@@ -17,6 +17,7 @@ package com.skydoves.retrofit.adapters.arrow.internals
 
 import arrow.core.Either
 import arrow.core.left
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -37,19 +38,24 @@ import java.lang.reflect.Type
  *
  * @property proxy Proxy of the original http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a left value.
  */
 internal class EitherCall<T : Any>(
   private val proxy: Call<T>,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : Call<Either<Throwable, T?>> {
 
   override fun enqueue(callback: Callback<Either<Throwable, T?>>) {
     coroutineScope.launch {
       try {
         val response = proxy.awaitResponse()
-        val either = response.toEither(paramType)
+        val either = response.toEither(paramType, nullBodyAsFailure)
         callback.onResponse(this@EitherCall, Response.success(either))
+      } catch (e: CancellationException) {
+        // Cancellation is not a network failure, so it must not be folded into a left value.
+        throw e
       } catch (e: Exception) {
         val either = e.left()
         callback.onResponse(this@EitherCall, Response.success(either))
@@ -59,12 +65,19 @@ internal class EitherCall<T : Any>(
 
   override fun execute(): Response<Either<Throwable, T?>> =
     runBlocking(coroutineScope.coroutineContext) {
-      val either = proxy.execute().toEither(paramType)
+      // Mirrors enqueue: transport failures are encapsulated rather than thrown.
+      val either = try {
+        proxy.execute().toEither(paramType, nullBodyAsFailure)
+      } catch (e: CancellationException) {
+        throw e
+      } catch (e: Exception) {
+        e.left()
+      }
       Response.success(either)
     }
 
   override fun clone(): Call<Either<Throwable, T?>> =
-    EitherCall(proxy.clone(), paramType, coroutineScope)
+    EitherCall(proxy.clone(), paramType, coroutineScope, nullBodyAsFailure)
 
   override fun request(): Request = proxy.request()
   override fun timeout(): Timeout = proxy.timeout()

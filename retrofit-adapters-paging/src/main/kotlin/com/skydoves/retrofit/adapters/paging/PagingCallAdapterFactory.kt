@@ -15,16 +15,15 @@
  */
 package com.skydoves.retrofit.adapters.paging
 
-import android.content.res.Resources.NotFoundException
 import com.skydoves.retrofit.adapters.paging.annotations.PagingKeyConfig
 import com.skydoves.retrofit.adapters.paging.internals.PagingCallAdapter
+import com.skydoves.retrofit.adapters.paging.internals.PagingMappers
 import com.skydoves.retrofit.adapters.paging.internals.PagingSourceCall
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import kotlin.reflect.full.createInstance
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -52,18 +51,16 @@ public class PagingCallAdapterFactory private constructor() : CallAdapter.Factor
 
         val resultType = getParameterUpperBound(0, callType as ParameterizedType)
         val pagingKeyConfig = annotations.filterIsInstance<PagingKeyConfig>().firstOrNull()
-          ?: throw NotFoundException(
-            "Missing @PagingKeyConfig annotation for a method, " +
-              "which returns NetworkPagingSource type.",
-          )
-
-        val mapper = pagingKeyConfig.mapper.createInstance()
-        if (mapper !is PagingMapper<*, *>) {
-          throw NotFoundException(
-            "The mapper parameter class must implement PagingMapper " +
-              "interface: ${pagingKeyConfig.mapper}",
-          )
+        require(pagingKeyConfig != null) {
+          "Missing @PagingKeyConfig annotation for a method, " +
+            "which returns NetworkPagingSource type."
         }
+        require(pagingKeyConfig.keySize > 0) {
+          "@PagingKeyConfig keySize must be greater than zero, but was ${pagingKeyConfig.keySize}."
+        }
+
+        // Fails fast at Retrofit setup time rather than on the first page load.
+        PagingMappers.create(pagingKeyConfig.mapper.java)
 
         return PagingCallAdapter(resultType, pagingKeyConfig)
       }

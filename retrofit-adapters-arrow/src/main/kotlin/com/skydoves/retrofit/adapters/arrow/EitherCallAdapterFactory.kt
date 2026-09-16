@@ -40,6 +40,7 @@ import java.lang.reflect.Type
  */
 public class EitherCallAdapterFactory private constructor(
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : CallAdapter.Factory() {
 
   override fun get(
@@ -63,6 +64,7 @@ public class EitherCallAdapterFactory private constructor(
           resultType = resultType,
           paramType = paramType,
           coroutineScope = coroutineScope,
+          nullBodyAsFailure = nullBodyAsFailure,
         )
       }
 
@@ -81,6 +83,7 @@ public class EitherCallAdapterFactory private constructor(
           resultType = resultType,
           paramType = paramType,
           coroutineScope = coroutineScope,
+          nullBodyAsFailure = nullBodyAsFailure,
         )
       }
       else -> return null
@@ -105,10 +108,18 @@ public class EitherCallAdapterFactory private constructor(
      * Create an instance of [EitherCallAdapterFactory].
      *
      * @param coroutineScope A coroutine scope that runs network requests.
+     * @param nullBodyAsFailure Reports a successful response that carries a null body as a
+     * [com.skydoves.retrofit.adapters.core.NullBodyException] on the left. Disabled by default,
+     * which surfaces the null on the right.
      */
     @JvmStatic
+    @JvmOverloads
     public fun create(
       coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO),
-    ): EitherCallAdapterFactory = EitherCallAdapterFactory(coroutineScope = coroutineScope)
+      nullBodyAsFailure: Boolean = false,
+    ): EitherCallAdapterFactory = EitherCallAdapterFactory(
+      coroutineScope = coroutineScope,
+      nullBodyAsFailure = nullBodyAsFailure,
+    )
   }
 }
