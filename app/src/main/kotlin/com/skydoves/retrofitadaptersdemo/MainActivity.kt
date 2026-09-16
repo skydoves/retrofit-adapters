@@ -17,7 +17,6 @@ package com.skydoves.retrofitadaptersdemo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.skydoves.retrofitadaptersdemo.adapters.MainPagingAdapter
 import com.skydoves.retrofitadaptersdemo.databinding.ActivityMainBinding
@@ -32,7 +31,8 @@ public class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    val binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
     viewModel.fetchPosters()
     viewModel.fetchPostersAsEither()

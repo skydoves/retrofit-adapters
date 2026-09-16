@@ -16,7 +16,7 @@
 import com.skydoves.retrofit.adapters.Configuration
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.kotlin.jvm.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
@@ -43,7 +43,7 @@ mavenPublishing {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
   compilerOptions {
     freeCompilerArgs.addAll(
-      listOf("-Xopt-in=kotlin.contracts.ExperimentalContracts")
+      listOf("-opt-in=kotlin.contracts.ExperimentalContracts")
     )
   }
 }
@@ -60,7 +60,6 @@ dependencies {
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.inline)
   testImplementation(libs.mockito.kotlin)
-  testImplementation(libs.arch.test)
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
   testImplementation(libs.coroutines.test)

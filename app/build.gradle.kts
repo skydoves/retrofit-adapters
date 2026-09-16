@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 import com.skydoves.retrofit.adapters.Configuration
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   id(libs.plugins.android.application.get().pluginId)
-  id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
-  id(libs.plugins.kotlin.kapt.get().pluginId)
   id(libs.plugins.ksp.get().pluginId)
 }
 
@@ -33,11 +32,10 @@ android {
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
-    multiDexEnabled = true
   }
 
   buildFeatures {
-    dataBinding = true
+    viewBinding = true
   }
 
   compileOptions {
@@ -45,12 +43,14 @@ android {
       targetCompatibility = JavaVersion.VERSION_17
   }
 
-  kotlinOptions {
-    jvmTarget = "17"
-  }
-
   lint {
     abortOnError = false
+  }
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_17)
   }
 }
 
@@ -73,6 +73,4 @@ dependencies {
 
   implementation(libs.glide)
   implementation(libs.timber)
-
-  implementation("androidx.multidex:multidex:2.0.1")
 }

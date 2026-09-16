@@ -17,7 +17,6 @@ import com.skydoves.retrofit.adapters.Configuration
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }
@@ -54,10 +53,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
 
-  kotlinOptions {
-    jvmTarget = "11"
-  }
-
   lint {
     abortOnError = false
   }
@@ -75,7 +70,6 @@ dependencies {
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.inline)
   testImplementation(libs.mockito.kotlin)
-  testImplementation(libs.arch.test)
   testImplementation(libs.mock.webserver)
   testImplementation(libs.retrofit.moshi)
   testImplementation(libs.coroutines.test)

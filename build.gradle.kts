@@ -17,9 +17,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
-  alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.kotlin.jvm) apply false
   alias(libs.plugins.kotlin.serialization) apply false
-  alias(libs.plugins.kotlin.kapt) apply false
   alias(libs.plugins.ksp) apply false
   alias(libs.plugins.kotlin.binary.compatibility)
   alias(libs.plugins.nexus.plugin)
@@ -36,7 +35,7 @@ subprojects {
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
       target("**/*.kt")
-      targetExclude("$buildDir/**/*.kt")
+      targetExclude("${layout.buildDirectory.get()}/**/*.kt")
       ktlint().editorConfigOverride(
         mapOf(
           "indent_size" to "2",
@@ -49,7 +48,7 @@ subprojects {
     }
     format("kts") {
       target("**/*.kts")
-      targetExclude("$buildDir/**/*.kts")
+      targetExclude("${layout.buildDirectory.get()}/**/*.kts")
       licenseHeaderFile(rootProject.file("spotless/copyright.kt"), "(^(?![\\/ ]\\*).*$)")
       trimTrailingWhitespace()
       endWithNewline()
@@ -62,7 +61,7 @@ subprojects {
         jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
         freeCompilerArgs.addAll(
           listOf(
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xexplicit-api=strict",
           )
         )
