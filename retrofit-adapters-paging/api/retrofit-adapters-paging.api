@@ -19,6 +19,10 @@ public abstract interface class com/skydoves/retrofit/adapters/paging/PagingMapp
 	public abstract fun map (Ljava/lang/Object;)Ljava/util/List;
 }
 
+public abstract interface class com/skydoves/retrofit/adapters/paging/PagingMapperRegistry {
+	public abstract fun create (Ljava/lang/Class;)Lcom/skydoves/retrofit/adapters/paging/PagingMapper;
+}
+
 public abstract interface annotation class com/skydoves/retrofit/adapters/paging/annotations/PagingKey : java/lang/annotation/Annotation {
 }
 

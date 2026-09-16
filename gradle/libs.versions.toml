@@ -15,6 +15,7 @@ arrow = "2.2.3"
 paging = "3.5.1"
 ksp = "2.3.12"
 moshi = "1.15.2"
+gson = "2.14.0"
 glide = "5.0.9"
 androidxLifecycle = "2.11.0"
 androidxMacroBenchmark = "1.5.0"
@@ -53,6 +54,9 @@ serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization
 arrow = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-core = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }

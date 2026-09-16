@@ -15,9 +15,20 @@
  */
 package com.skydoves.retrofit.adapters.serialization
 
-import kotlinx.serialization.decodeFromString
+import com.skydoves.retrofit.adapters.core.httpErrorBody
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.2.0
+ *
+ * The [Json] instance used by [deserializeHttpError] unless you supply your own.
+ *
+ * Error payloads routinely carry fields that your error model does not declare, so unknown keys are
+ * ignored rather than treated as a parse failure.
+ */
+public val DefaultErrorJson: Json = Json { ignoreUnknownKeys = true }
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -25,13 +36,17 @@ import retrofit2.HttpException
  *
  * Deserializes the Json string from error body of the [HttpException] to the [T] custom type. The
  * [Json] instance could be configured as needed.
- * It returns `null` if the exception is not [HttpException] or error body is empty.
+ *
+ * It returns `null` if the exception is not [HttpException], the error body is empty, or the body
+ * does not deserialize into [T]. Reading the error body does not consume it, so it can be
+ * deserialized more than once.
  */
-public inline fun <reified T> Throwable.deserializeHttpError(json: Json = Json): T? {
-  if (this is HttpException) {
-    val errorBody = response()?.errorBody()?.string() ?: return null
-    return json.decodeFromString(errorBody)
-  } else {
-    return null
+public inline fun <reified T> Throwable.deserializeHttpError(json: Json = DefaultErrorJson): T? {
+  val errorBody = httpErrorBody() ?: return null
+  return try {
+    json.decodeFromString<T>(errorBody)
+  } catch (e: IllegalArgumentException) {
+    // SerializationException extends IllegalArgumentException.
+    null
   }
 }

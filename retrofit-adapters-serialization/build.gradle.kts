@@ -41,9 +41,11 @@ mavenPublishing {
 }
 
 dependencies {
+  api(project(":retrofit-adapters-core"))
+  api(libs.serialization)
   implementation(libs.retrofit)
   implementation(libs.okhttp)
-  api(libs.serialization)
 
   testImplementation(libs.junit)
+  testImplementation(libs.mock.webserver)
 }

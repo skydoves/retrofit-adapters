@@ -1,0 +1,4 @@
+public final class com/skydoves/retrofit/adapters/moshi/MoshiExtensionsKt {
+	public static final fun getDefaultErrorMoshi ()Lcom/squareup/moshi/Moshi;
+}
+

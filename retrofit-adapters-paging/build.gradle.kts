@@ -44,6 +44,7 @@ android {
   namespace = "com.skydoves.retrofit.adapters.paging"
   defaultConfig {
     minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   compileOptions {
@@ -57,7 +58,6 @@ android {
 }
 
 dependencies {
-  implementation(libs.kotlin.reflect)
   implementation(libs.coroutines)
   implementation(libs.okhttp)
   api(libs.paging)

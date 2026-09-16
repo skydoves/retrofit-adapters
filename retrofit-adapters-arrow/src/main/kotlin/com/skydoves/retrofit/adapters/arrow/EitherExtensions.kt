@@ -80,3 +80,34 @@ public suspend inline fun <A, B, C> Either<A, B>.onLeftSuspend(
     onLeft(value)
   }
 }
+
+/**
+ * @author skydoves (Jaewoong Eum)
+ * @since 1.2.0
+ *
+ * Performs the given suspend [action] on the custom error model [E] if this [Either] instance
+ * represents [Left]. The left hand [Throwable] is handed to [deserialize], which turns it into your
+ * custom error model [E]. The given suspend [action] can receive null if the error body is empty or
+ * could not be deserialized. Returns the original [Either] unchanged.
+ *
+ * [deserialize] is supplied by whichever converter artifact you use, so this module stays free of
+ * any json dependency:
+ *
+ * ```kotlin
+ * either.onLeftSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorModel ->
+ *   // handle the error model
+ * }
+ * ```
+ *
+ * @param deserialize Converts the left hand failure into your custom error model, typically
+ * `deserializeHttpError` from `retrofit-adapters-serialization`, `-moshi` or `-gson`.
+ * @param action Performs on the error model if this [Either] instance represents [Left].
+ */
+public suspend inline fun <B, E> Either<Throwable, B>.onLeftSuspendAsError(
+  crossinline deserialize: (exception: Throwable) -> E?,
+  crossinline action: suspend (errorModel: E?) -> Unit,
+): Either<Throwable, B> = apply {
+  if (this is Left) {
+    action(deserialize(value))
+  }
+}

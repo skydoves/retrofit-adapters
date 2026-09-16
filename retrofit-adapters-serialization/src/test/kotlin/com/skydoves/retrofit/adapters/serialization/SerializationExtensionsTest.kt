@@ -15,49 +15,60 @@
  */
 package com.skydoves.retrofit.adapters.serialization
 
-import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.Is.`is`
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 @RunWith(JUnit4::class)
 internal class SerializationExtensionsTest {
 
+  private fun httpException(body: String): HttpException = HttpException(
+    Response.error<Unit>(400, body.toResponseBody("application/json".toMediaType())),
+  )
+
   @Test
-  fun `deserializeErrorBody Test`() {
-    val response = Response.error<String>(
-      403,
-      (
-        """{"code":10001, "message":"This is a custom error message"}""".trimIndent()
-        ).toResponseBody(
-        contentType = "text/plain".toMediaType(),
-      ),
-    )
-    val httpException = HttpException(response)
-    val errorMessage = httpException.deserializeHttpError<ErrorMessage>()
-    assertThat(errorMessage?.code, `is`(10001))
-    assertThat(errorMessage?.message, `is`("This is a custom error message"))
+  fun `deserializes the error body`() {
+    val error = httpException("""{"code":10,"message":"nope"}""")
+      .deserializeHttpError<ErrorMessage>()
+
+    assertThat(error?.code, `is`(10))
+    assertThat(error?.message, `is`("nope"))
   }
 
   @Test
-  fun `deserializeErrorBody ignored field Test`() {
-    val response = Response.error<String>(
-      403,
-      (
-        """{"code":10001, "message":"This is a custom error message", "extra":42}""".trimIndent()
-        ).toResponseBody(
-        contentType = "text/plain".toMediaType(),
-      ),
+  fun `ignores unknown keys instead of failing`() {
+    val error = httpException("""{"code":10,"message":"nope","extra":"unmapped"}""")
+      .deserializeHttpError<ErrorMessage>()
+
+    assertThat(error?.code, `is`(10))
+  }
+
+  @Test
+  fun `returns null for a malformed body instead of throwing`() {
+    assertThat(
+      httpException("not json at all").deserializeHttpError<ErrorMessage>(),
+      `is`(nullValue()),
     )
-    val httpException = HttpException(response)
-    val errorMessage =
-      httpException.deserializeHttpError<ErrorMessage>(Json { ignoreUnknownKeys = true })
-    assertThat(errorMessage?.code, `is`(10001))
+  }
+
+  @Test
+  fun `returns null for a non http throwable`() {
+    assertThat(IOException("boom").deserializeHttpError<ErrorMessage>(), `is`(nullValue()))
+  }
+
+  @Test
+  fun `the same failure can be deserialized more than once`() {
+    val exception = httpException("""{"code":10,"message":"nope"}""")
+
+    assertThat(exception.deserializeHttpError<ErrorMessage>()?.code, `is`(10))
+    assertThat(exception.deserializeHttpError<ErrorMessage>()?.code, `is`(10))
   }
 }

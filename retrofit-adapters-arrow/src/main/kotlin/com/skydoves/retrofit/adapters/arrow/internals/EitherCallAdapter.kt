@@ -29,16 +29,18 @@ import java.lang.reflect.Type
  *
  * @property resultType Type of the result from the http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a left value.
  */
 internal class EitherCallAdapter(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : CallAdapter<Type, Call<Either<Throwable, Type?>>> {
 
   override fun responseType(): Type = resultType
 
   override fun adapt(call: Call<Type>): Call<Either<Throwable, Type?>> {
-    return EitherCall(call, paramType, coroutineScope)
+    return EitherCall(call, paramType, coroutineScope, nullBodyAsFailure)
   }
 }

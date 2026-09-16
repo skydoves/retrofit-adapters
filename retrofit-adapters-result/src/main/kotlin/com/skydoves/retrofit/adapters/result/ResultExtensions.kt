@@ -17,7 +17,7 @@
 
 package com.skydoves.retrofit.adapters.result
 
-import com.skydoves.retrofit.adapters.serialization.deserializeHttpError
+import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -36,6 +36,10 @@ public suspend inline fun <R> runCatchingSuspend(
 ): Result<R> {
   return try {
     Result.success(block())
+  } catch (e: CancellationException) {
+    // Swallowing this would break structured concurrency: the caller is already cancelled, so the
+    // coroutine must not keep running past this point with a Result.failure in hand.
+    throw e
   } catch (e: Throwable) {
     Result.failure(e)
   }
@@ -55,6 +59,9 @@ public suspend inline fun <T, R> T.runCatchingSuspend(
 ): Result<R> {
   return try {
     Result.success(block())
+  } catch (e: CancellationException) {
+    // See the no-receiver overload: cancellation has to propagate.
+    throw e
   } catch (e: Throwable) {
     Result.failure(e)
   }
@@ -103,20 +110,32 @@ public suspend inline fun <T> Result<T>.onFailureSuspend(
  * @since 1.0.1
  *
  * Performs the given suspend [action] on the encapsulated custom error model [E] if this instance represents failure.
- * The `errorBody()` of the [HttpException] will be deserialized to your custom error model [E].
- * The given suspend [action] can receive null if the error body is empty.
- * Returns the original [Result] unchanged.
+ * The `errorBody()` of the [HttpException] is handed to [deserialize], which turns it into your
+ * custom error model [E]. The given suspend [action] can receive null if the error body is empty or
+ * could not be deserialized. Returns the original [Result] unchanged.
  *
+ * [deserialize] is supplied by whichever converter artifact you use, so this module stays free of
+ * any json dependency:
+ *
+ * ```kotlin
+ * result.onFailureSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorModel ->
+ *   // handle the error model
+ * }
+ * ```
+ *
+ * @param deserialize Converts the failure into your custom error model, typically
+ * `deserializeHttpError` from `retrofit-adapters-serialization`, `-moshi` or `-gson`.
  * @param action Performs on the encapsulated value if this instance represents failure.
  */
-public suspend inline fun <T, reified E> Result<T>.onFailureSuspendAsError(
+public suspend inline fun <T, E> Result<T>.onFailureSuspendAsError(
+  crossinline deserialize: (exception: Throwable) -> E?,
   crossinline action: suspend (errorModel: E?) -> Unit,
 ): Result<T> {
   contract {
     callsInPlace(action, InvocationKind.AT_MOST_ONCE)
   }
   exceptionOrNull()?.let { throwable ->
-    action(throwable.deserializeHttpError<E>())
+    action(deserialize(throwable))
   }
   return this
 }

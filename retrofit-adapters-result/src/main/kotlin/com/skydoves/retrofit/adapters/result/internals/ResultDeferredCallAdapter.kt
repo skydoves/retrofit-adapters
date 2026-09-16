@@ -15,6 +15,7 @@
  */
 package com.skydoves.retrofit.adapters.result.internals
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -32,16 +33,16 @@ import java.lang.reflect.Type
  *
  * @property resultType Type of the result from the http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a failure.
  */
-internal class ResultDeferredCallAdapter<T> constructor(
+internal class ResultDeferredCallAdapter<T>(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : CallAdapter<T, Deferred<Result<T?>>> {
 
-  override fun responseType(): Type {
-    return resultType
-  }
+  override fun responseType(): Type = resultType
 
   @Suppress("DeferredIsResult")
   override fun adapt(call: Call<T>): Deferred<Result<T?>> {
@@ -56,11 +57,12 @@ internal class ResultDeferredCallAdapter<T> constructor(
     coroutineScope.launch {
       try {
         val response = call.awaitResponse()
-        val result = response.toResult(paramType)
-        deferred.complete(result)
+        deferred.complete(response.toResult(paramType, nullBodyAsFailure))
+      } catch (e: CancellationException) {
+        deferred.cancel(e)
+        throw e
       } catch (e: Exception) {
-        val result = Result.failure<T>(e)
-        deferred.complete(result)
+        deferred.complete(Result.failure(e))
       }
     }
 

@@ -63,6 +63,7 @@ dependencies {
   implementation(libs.okhttp)
   implementation(libs.arrow)
   api(libs.retrofit)
+  api(project(":retrofit-adapters-core"))
 
   // unit test
   testImplementation(project(":retrofit-adapters-test"))

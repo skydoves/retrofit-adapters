@@ -20,9 +20,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.skydoves.retrofit.adapters.arrow.onLeftSuspend
+import com.skydoves.retrofit.adapters.arrow.onLeftSuspendAsError
 import com.skydoves.retrofit.adapters.arrow.onRightSuspend
-import com.skydoves.retrofit.adapters.result.onFailureSuspend
+import com.skydoves.retrofit.adapters.result.onFailureSuspendAsError
 import com.skydoves.retrofit.adapters.result.onSuccessSuspend
 import com.skydoves.retrofit.adapters.serialization.deserializeHttpError
 import com.skydoves.retrofitadaptersdemo.network.ErrorMessage
@@ -43,8 +43,7 @@ public class MainViewModel constructor(
       val result = pokemonService.fetchPokemonList()
       result.onSuccessSuspend {
         Timber.d("fetched as Result: $it")
-      }.onFailureSuspend { throwable ->
-        val errorBody = throwable.deserializeHttpError<ErrorMessage>()
+      }.onFailureSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorBody ->
         Timber.e("errorBody: $errorBody")
       }
     }
@@ -55,8 +54,7 @@ public class MainViewModel constructor(
       val either = pokemonService.fetchPokemonListAsEither()
       either.onRightSuspend {
         Timber.d("fetched as Either: $it")
-      }.onLeftSuspend {
-        val errorBody = it.deserializeHttpError<ErrorMessage>()
+      }.onLeftSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorBody ->
         Timber.e("errorBody: $errorBody")
       }
     }

@@ -1,0 +1,4 @@
+public final class com/skydoves/retrofit/adapters/gson/GsonExtensionsKt {
+	public static final fun getDefaultErrorGson ()Lcom/google/gson/Gson;
+}
+

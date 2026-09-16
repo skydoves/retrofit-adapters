@@ -17,8 +17,11 @@
 
 package com.skydoves.retrofit.adapters.result.internals
 
+import com.skydoves.retrofit.adapters.core.NullBodyException
+import kotlinx.coroutines.CancellationException
 import retrofit2.Call
 import retrofit2.HttpException
+import retrofit2.Invocation
 import retrofit2.Response
 import java.lang.reflect.Type
 
@@ -27,17 +30,45 @@ import java.lang.reflect.Type
  * @since 1.0.0
  *
  * Returns [Result] from the [Response] instance and [Call] interface.
+ *
+ * @param nullBodyAsFailure Reports a successful response with a null body as a
+ * [NullBodyException] failure instead of a successful null value.
  */
-internal fun <T> Response<T>.toResult(paramType: Type): Result<T?> {
-  return kotlin.runCatching {
-    if (isSuccessful) {
-      if (paramType == Unit::class.java) {
-        Unit as T
+internal fun <T> Response<T>.toResult(
+  paramType: Type,
+  nullBodyAsFailure: Boolean,
+): Result<T?> = try {
+  when {
+    !isSuccessful -> Result.failure(HttpException(this))
+    paramType == Unit::class.java -> Result.success(Unit as T)
+    else -> {
+      val body = body()
+      if (body == null && nullBodyAsFailure) {
+        Result.failure(nullBodyException())
       } else {
-        body()
+        Result.success(body)
       }
-    } else {
-      throw HttpException(this)
     }
   }
+} catch (e: CancellationException) {
+  throw e
+} catch (e: Throwable) {
+  Result.failure(e)
+}
+
+/**
+ * Describes which service method produced a null body, matching the message Retrofit itself uses
+ * for non-null return types.
+ */
+internal fun Response<*>.nullBodyException(): NullBodyException {
+  val request = raw().request
+  val method = request.tag(Invocation::class.java)?.method()
+  val origin = if (method != null) {
+    "${method.declaringClass.name}.${method.name}"
+  } else {
+    request.url.toString()
+  }
+  return NullBodyException(
+    "Response from $origin was null but the response body type was declared as non-null",
+  )
 }

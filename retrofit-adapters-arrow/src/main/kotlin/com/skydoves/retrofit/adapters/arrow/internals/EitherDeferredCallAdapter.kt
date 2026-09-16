@@ -17,10 +17,11 @@ package com.skydoves.retrofit.adapters.arrow.internals
 
 import arrow.core.Either
 import arrow.core.left
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.awaitResponse
@@ -34,37 +35,40 @@ import java.lang.reflect.Type
  *
  * @property resultType Type of the result from the http request.
  * @property coroutineScope A coroutine scope that launches network requests.
+ * @property nullBodyAsFailure Reports a successful response with a null body as a [Left] instead
+ * of completing with a null value.
  */
-internal class EitherDeferredCallAdapter<T> constructor(
+internal class EitherDeferredCallAdapter<T>(
   private val resultType: Type,
   private val paramType: Type,
   private val coroutineScope: CoroutineScope,
+  private val nullBodyAsFailure: Boolean,
 ) : CallAdapter<T, Deferred<Either<Throwable, T?>>> {
 
-  override fun responseType(): Type {
-    return resultType
-  }
+  override fun responseType(): Type = resultType
 
   @Suppress("DeferredIsResult")
-  override fun adapt(call: Call<T>): Deferred<Either<Throwable, T?>> =
-    runBlocking(coroutineScope.coroutineContext) {
-      val deferred = CompletableDeferred<Either<Throwable, T?>>().apply {
-        invokeOnCompletion {
-          if (isCancelled && !call.isCanceled) {
-            call.cancel()
-          }
+  override fun adapt(call: Call<T>): Deferred<Either<Throwable, T?>> {
+    val deferred = CompletableDeferred<Either<Throwable, T?>>().apply {
+      invokeOnCompletion {
+        if (isCancelled && !call.isCanceled) {
+          call.cancel()
         }
       }
-
-      val response = call.awaitResponse()
-      try {
-        val either = response.toEither(paramType)
-        deferred.complete(either)
-      } catch (e: Exception) {
-        val either = e.left()
-        deferred.complete(either)
-      }
-
-      deferred
     }
+
+    coroutineScope.launch {
+      try {
+        val response = call.awaitResponse()
+        deferred.complete(response.toEither(paramType, nullBodyAsFailure))
+      } catch (e: CancellationException) {
+        deferred.cancel(e)
+        throw e
+      } catch (e: Exception) {
+        deferred.complete(e.left())
+      }
+    }
+
+    return deferred
+  }
 }

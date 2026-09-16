@@ -52,7 +52,7 @@ dependencies {
   implementation(libs.coroutines)
   implementation(libs.okhttp)
   api(libs.retrofit)
-  api(project(":retrofit-adapters-serialization"))
+  api(project(":retrofit-adapters-core"))
 
   // unit test
   testImplementation(project(":retrofit-adapters-test"))

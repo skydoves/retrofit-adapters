@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=19"><img alt="API" src="https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://android-arsenal.com/api?level=23"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://github.com/skydoves/retrofit-adapters/actions/workflows/android.yml"><img alt="Build Status" src="https://github.com/skydoves/retrofit-adapters/actions/workflows/android.yml/badge.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
   <a href="https://skydoves.github.io/libraries/retrofit-adapters/html/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-retrofit-adapters.svg"/></a>
@@ -82,6 +82,20 @@ You can confine the response type as Unit when you need to handle empty body (co
 ```kotlin
 @POST("/users/info")
 suspend fun updateUserInfo(@Body userRequest: UserRequest): Result<Unit>
+```
+
+### Null Body as Failure
+
+A successful response with no body is reported as `Result.success(null)` by default, even when the
+service method declares a non-null type. That null then surfaces far away from the call site. Set
+`nullBodyAsFailure` to receive a `NullBodyException` failure instead:
+
+```kotlin
+val retrofit: Retrofit = Retrofit.Builder()
+  .baseUrl("BASE_URL")
+  .addConverterFactory(..)
+  .addCallAdapterFactory(ResultCallAdapterFactory.create(nullBodyAsFailure = true))
+  .build()
 ```
 
 ### Unit Tests by Injecting TestScope
@@ -166,6 +180,28 @@ class PokemonPagingMapper : PagingMapper<PokemonResponse, Pokemon> {
 }
 ```
 
+### Compile Time Validation
+
+The call adapter resolves the paging configuration reflectively, so a mistake normally shows up as a
+crash on the first request, and R8 shrinks the mapper classes away because a `KClass` annotation
+value is not a keep root. Apply the KSP processor to catch those at compile time and to instantiate
+mappers without reflection:
+
+```gradle
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation("com.github.skydoves:retrofit-adapters-paging:<version>")
+    ksp("com.github.skydoves:retrofit-adapters-paging-compiler:<version>")
+}
+```
+
+It reports a missing `@PagingKeyConfig` or `@PagingKey`, a non Int paging key, a non suspend method,
+a `keySize` of zero or less, and a mapper that does not implement `PagingMapper`, cannot be
+instantiated, or whose type arguments do not match the returned `NetworkPagingSource`.
+
 You will get the network response, which is wrapped by the `NetworkPagingSource` class like the below:
 
 ```kotlin
@@ -243,6 +279,15 @@ You can confine the response type as Unit when you need to handle empty body (co
 suspend fun updateUserInfo(@Body userRequest: UserRequest): Either<Throwable, Unit>
 ```
 
+### Null Body as Failure
+
+`EitherCallAdapterFactory` takes the same `nullBodyAsFailure` flag, which reports a null body as a
+`NullBodyException` on the left instead of a right hand null:
+
+```kotlin
+.addCallAdapterFactory(EitherCallAdapterFactory.create(nullBodyAsFailure = true))
+```
+
 ### Unit Tests by Injecting TestScope
 
 You can also inject your custom `CoroutineScope` into the `EitherCallAdapterFactory` and execute network requests on the scope.
@@ -261,26 +306,36 @@ val retrofit: Retrofit = Retrofit.Builder()
 
 <img align="right" width="90px" src="https://user-images.githubusercontent.com/24237865/178630165-76855349-ac04-4474-8bcf-8eb5f8c41095.png"/>
 
-## Kotlin Serialization
+## Error Body Deserialization
 
-This library allows you to deserialize your error body of the Retrofit response as your custom error class with [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+This library allows you to deserialize the error body of a Retrofit response into your own error
+class. Pick the artifact that matches the json library you already use, so nothing else is pulled
+into your build:
 
-> For more information about setting up the plugin and dependency, check out [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html).
+| Artifact | Json library |
+| --- | --- |
+| `retrofit-adapters-serialization` | [Kotlin Serialization](https://kotlinlang.org/docs/serialization.html) |
+| `retrofit-adapters-moshi` | [Moshi](https://github.com/square/moshi) |
+| `retrofit-adapters-gson` | [Gson](https://github.com/google/gson) |
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/retrofit-adapters-serialization.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22retrofit-adapters-serialization%22)
 <br>
 
-Add the dependency below to your **module**'s `build.gradle` file:
+Add the one you need to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
     implementation "com.github.skydoves:retrofit-adapters-serialization:<version>"
+    // or
+    implementation "com.github.skydoves:retrofit-adapters-moshi:<version>"
+    // or
+    implementation "com.github.skydoves:retrofit-adapters-gson:<version>"
 }
 ```
 
 ### Deserialize Error Body
 
-You can deserialize your error body with the `deserializeHttpError` extension and your custom error class. First, define your custom error class following your RESTful API formats as seen in the below:
+Define your custom error class following your RESTful API format:
 
 ```kotlin
 @Serializable
@@ -290,7 +345,7 @@ public data class ErrorMessage(
 )
 ```
 
-Next, gets the result of the error class to the `throwable` instance with the `deserializeHttpError` extension like the below:
+Then deserialize a failure with the `deserializeHttpError` extension:
 
 ```kotlin
 val result = pokemonService.fetchPokemonList()
@@ -298,6 +353,29 @@ result.onSuccessSuspend {
   Timber.d("fetched as Result: $it")
 }.onFailureSuspend { throwable ->
   val errorBody = throwable.deserializeHttpError<ErrorMessage>()
+}
+```
+
+It returns `null` instead of throwing when the failure is not an `HttpException`, the error body is
+empty, or the payload does not match your error class. Unknown keys are ignored, and reading the
+error body does not consume it, so the same failure can be deserialized more than once.
+
+> **Note**: The Moshi artifact resolves generated adapters, so annotate your error model with
+> `@JsonClass(generateAdapter = true)` and apply `moshi-kotlin-codegen`.
+
+### onFailureSuspendAsError and onLeftSuspendAsError
+
+`retrofit-adapters-result` and `retrofit-adapters-arrow` carry no json dependency, so they take the
+deserializer as a parameter. That lets the same call site work with any of the three artifacts
+above:
+
+```kotlin
+result.onFailureSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorModel ->
+  // handle the error model
+}
+
+either.onLeftSuspendAsError({ it.deserializeHttpError<ErrorMessage>() }) { errorModel ->
+  // handle the error model
 }
 ```
 

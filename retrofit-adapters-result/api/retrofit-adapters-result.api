@@ -1,19 +1,24 @@
 public final class com/skydoves/retrofit/adapters/result/ResultCallAdapterFactory : retrofit2/CallAdapter$Factory {
 	public static final field Companion Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory$Companion;
-	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final fun create ()Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
 	public static final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
+	public static final fun create (Lkotlinx/coroutines/CoroutineScope;Z)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
 	public fun get (Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;
 }
 
 public final class com/skydoves/retrofit/adapters/result/ResultCallAdapterFactory$Companion {
+	public final fun create ()Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
 	public final fun create (Lkotlinx/coroutines/CoroutineScope;)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
-	public static synthetic fun create$default (Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
+	public final fun create (Lkotlinx/coroutines/CoroutineScope;Z)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
+	public static synthetic fun create$default (Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory$Companion;Lkotlinx/coroutines/CoroutineScope;ZILjava/lang/Object;)Lcom/skydoves/retrofit/adapters/result/ResultCallAdapterFactory;
 }
 
 public final class com/skydoves/retrofit/adapters/result/ResultExtensionsKt {
 	public static final fun foldSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun mapSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun onFailureSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun onFailureSuspendAsError (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun onSuccessSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun recoverSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun runCatchingSuspend (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

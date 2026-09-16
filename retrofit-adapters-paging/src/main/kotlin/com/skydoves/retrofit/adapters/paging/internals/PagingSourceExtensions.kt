@@ -23,9 +23,8 @@ import com.skydoves.retrofit.adapters.paging.annotations.PagingKey
 import com.skydoves.retrofit.adapters.paging.annotations.PagingKeyConfig
 import retrofit2.Call
 import retrofit2.Invocation
-import kotlin.reflect.full.createInstance
-import kotlin.reflect.full.hasAnnotation
-import kotlin.reflect.jvm.kotlinFunction
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 /**
  * @author skydoves (Jaewoong Eum)
@@ -41,27 +40,59 @@ internal fun <T : Any, R : Any> PagingSourceCall<T, R>.pagingSource(
   call: Call<T>,
   pagingKeyConfig: PagingKeyConfig,
 ): NetworkPagingSource<T, R> {
-  val invocation = call.request().tag(Invocation::class.java)!!
-  val method = invocation.method()
-  val pagingKey = method.kotlinFunction?.parameters?.indexOfFirst { it.hasAnnotation<PagingKey>() }
-  if (pagingKey == null || pagingKey == -1) {
-    throw RuntimeException(
-      method.declaringClass.name +
-        '.' +
-        method.name +
-        " must include the @PagingKey annotation to the page value parameter.",
-    )
+  val invocation = requireNotNull(call.request().tag(Invocation::class.java)) {
+    "The call is missing a Retrofit Invocation tag, so the paging key cannot be resolved."
   }
-  val keyIndex = pagingKey - 1
+  val method = invocation.method()
+  val keyIndex = method.pagingKeyIndex()
+  val argsField = call.argsField(method)
+
   return NetworkPagingSource(
     offsetPageKey = invocation.arguments()[keyIndex] as Int,
-    mapper = pagingKeyConfig.mapper.createInstance() as PagingMapper<T, R>,
+    mapper = PagingMappers.create(pagingKeyConfig.mapper.java) as PagingMapper<T, R>,
   ) { page ->
     val nextCall = call.clone()
-    val argsField = nextCall.javaClass.getDeclaredField("args")
-    argsField.isAccessible = true
-    val array = argsField.get(nextCall) as Array<Any>
-    array[keyIndex] = page * pagingKeyConfig.keySize
+    val args = argsField.get(nextCall) as Array<Any>
+    args[keyIndex] = page * pagingKeyConfig.keySize
     nextCall
   }
+}
+
+/**
+ * Resolves the index of the [PagingKey] annotated parameter.
+ *
+ * This reads Java parameter annotations rather than Kotlin reflection, because Retrofit already
+ * ships a `-keepattributes RuntimeVisibleParameterAnnotations` rule, so they survive R8 while
+ * Kotlin metadata does not have the same guarantee.
+ */
+private fun Method.pagingKeyIndex(): Int {
+  val index = parameterAnnotations.indexOfFirst { annotations ->
+    annotations.any { it is PagingKey }
+  }
+  require(index != -1) {
+    "$declaringClass.$name must include the @PagingKey annotation to the page value parameter."
+  }
+  return index
+}
+
+/**
+ * Locates Retrofit's internal argument array on the call implementation.
+ *
+ * The field is matched by type rather than by name: `retrofit2.OkHttpCall` is package private and
+ * R8 renames its fields, so a name based lookup breaks in minified release builds. The module also
+ * ships a consumer R8 rule that keeps the field itself.
+ */
+private fun Call<*>.argsField(method: Method): Field {
+  var type: Class<*>? = javaClass
+  while (type != null) {
+    val field = type.declaredFields.firstOrNull { it.type == Array<Any>::class.java }
+    if (field != null) {
+      return field.apply { isAccessible = true }
+    }
+    type = type.superclass
+  }
+  throw IllegalStateException(
+    "Unable to locate the argument array on ${javaClass.name} while paging " +
+      "$method. The Retrofit version in use may be incompatible with retrofit-adapters-paging.",
+  )
 }
