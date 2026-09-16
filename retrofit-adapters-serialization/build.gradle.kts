@@ -16,7 +16,7 @@
 import com.skydoves.retrofit.adapters.Configuration
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.kotlin.jvm.get().pluginId)
   id(libs.plugins.kotlin.serialization.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
 }

@@ -17,11 +17,10 @@ package com.skydoves.retrofitadaptersdemo.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.skydoves.retrofitadaptersdemo.R
+import com.bumptech.glide.Glide
 import com.skydoves.retrofitadaptersdemo.databinding.ItemPokemonBinding
 import com.skydoves.retrofitadaptersdemo.network.Pokemon
 
@@ -33,14 +32,16 @@ public class MainPagingAdapter :
   ) : RecyclerView.ViewHolder(binding.root)
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.binding.pokemon = getItem(position)
-    holder.binding.executePendingBindings()
+    val pokemon = getItem(position) ?: return
+    holder.binding.name.text = pokemon.name
+    Glide.with(holder.binding.image.context)
+      .load(pokemon.getImageUrl())
+      .into(holder.binding.image)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = DataBindingUtil.inflate<ItemPokemonBinding>(
+    val binding = ItemPokemonBinding.inflate(
       LayoutInflater.from(parent.context),
-      R.layout.item_pokemon,
       parent,
       false,
     )

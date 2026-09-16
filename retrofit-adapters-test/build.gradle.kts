@@ -15,7 +15,7 @@
  */
 
 plugins {
-  id("kotlin")
+  id(libs.plugins.kotlin.jvm.get().pluginId)
   id(libs.plugins.ksp.get().pluginId)
 }
 
@@ -31,7 +31,6 @@ dependencies {
   implementation(libs.mockito.core)
   implementation(libs.mockito.inline)
   implementation(libs.mockito.kotlin)
-  implementation(libs.arch.test)
   implementation(libs.mock.webserver)
   implementation(libs.retrofit.moshi)
   implementation(libs.coroutines.test)
